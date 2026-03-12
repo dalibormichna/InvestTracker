@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Investice">
+<title>Investiční Tracker</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='26' fill='%23ffcf5c' opacity='.2'/%3E%3Ctext x='30' y='40' text-anchor='middle' font-size='30'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  color-scheme:dark;
+  --bg:#0b1120;--card:#152035;--card2:#1c2d47;--card3:#243657;
+  --b1:rgba(255,255,255,.07);--b2:rgba(255,255,255,.12);--b3:rgba(255,255,255,.20);
+  --t1:#f0f4ff;--t2:#8fa3c8;--t3:#4d6080;
+  --accent:#4da8ff;--accent2:#2684ff;
+  --gold:#ffcf5c;--gold-bg:rgba(255,207,92,.13);
+  --green:#34c97a;--green-bg:rgba(52,201,122,.13);
+  --red:#ff6b6b;--red-bg:rgba(255,107,107,.13);
+  --amber:#ff9f43;--amber-bg:rgba(255,159,67,.13);
+  --purple:#a78bfa;--purple-bg:rgba(167,139,250,.13);
+  --r:13px;--rl:17px;--rxl:21px;
+  --sh:0 2px 12px rgba(0,0,0,.35);--shm:0 4px 24px rgba(0,0,0,.5);
+}
+html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:15px;overscroll-behavior:none;line-height:1.45}
+#app{display:flex;flex-direction:column;height:100dvh}
+
+/* HEADER */
+#hdr{background:var(–bg);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;border-bottom:1px solid var(–b1)}
+.logo{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;letter-spacing:-.4px}
+.logo-ico{width:30px;height:30px;border-radius:9px;background:var(–gold-bg);border:1px solid rgba(255,207,92,.25);display:flex;align-items:center;justify-content:center;font-size:16px}
+.q-pill{font-size:11px;color:var(–t2);background:var(–card);padding:4px 10px;border-radius:18px;border:1px solid var(–b2);display:flex;align-items:center;gap:5px}
+.q-dot{width:6px;height:6px;border-radius:50%;background:var(–green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* CONTENT */
+#content{flex:1;overflow-y:auto;scrollbar-width:none;background:var(–bg)}
+#content::-webkit-scrollbar{display:none}
+.view{display:none;animation:fadeUp .18s ease both}
+.view.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* BOTTOM NAV */
+#bnav{display:flex;background:var(–card);flex-shrink:0;border-top:1px solid var(–b2);padding:8px 0 calc(12px + env(safe-area-inset-bottom,0px))}
+.bt{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(–t3);font-size:10px;font-weight:600;cursor:pointer;padding:4px 0;font-family:‘DM Sans’,sans-serif;transition:color .15s}
+.bt .bi{font-size:19px;line-height:1}
+.bt.active{color:var(–gold)}
+
+/* FAB */
+#fab{position:fixed;right:16px;bottom:calc(86px + env(safe-area-inset-bottom,0px));height:50px;padding:0 20px;border-radius:25px;background:var(–gold);color:#0b1120;border:none;font-size:14px;font-weight:800;font-family:‘DM Sans’,sans-serif;display:flex;align-items:center;gap:7px;cursor:pointer;z-index:99;box-shadow:0 6px 24px rgba(255,207,92,.4);transition:transform .15s}
+#fab:active{transform:scale(.95)}
+#fab.hidden{display:none}
+
+/* Q NAV */
+.qnav{display:flex;gap:4px;padding:10px 14px 0;overflow-x:auto;scrollbar-width:none}
+.qnav::-webkit-scrollbar{display:none}
+.qb{flex-shrink:0;padding:5px 11px;border-radius:18px;border:1px solid var(–b2);background:var(–card);font-size:11px;font-weight:700;color:var(–t3);cursor:pointer;font-family:‘DM Sans’,sans-serif;transition:all .15s;white-space:nowrap}
+.qb.active{background:var(–gold);color:#0b1120;border-color:var(–gold)}
+.qb:hover:not(.active){border-color:var(–gold);color:var(–gold)}
+
+/* HERO */
+.hero{margin:10px 14px 0;border-radius:var(–rxl);padding:18px;background:linear-gradient(135deg,#1c2d47,#152035);border:1px solid var(–b2);box-shadow:var(–shm)}
+.hero-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(–t3);margin-bottom:4px}
+.hero-val{font-size:30px;font-weight:800;letter-spacing:-.8px;font-family:‘DM Mono’,monospace;line-height:1}
+.hero-sub{font-size:12px;color:var(–t2);margin-top:4px}
+.hero-pills{display:flex;gap:7px;margin-top:12px}
+.hp{flex:1;background:rgba(255,255,255,.05);border:1px solid var(–b1);border-radius:11px;padding:10px 12px}
+.hp-lbl{font-size:9px;color:var(–t3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+.hp-val{font-size:15px;font-weight:700;font-family:‘DM Mono’,monospace}
+.hp-val.j{color:var(–accent)}
+.hp-val.p{color:var(–green)}
+
+/* PROGRESS */
+.prog{margin-top:12px}
+.prog-row{display:flex;justify-content:space-between;font-size:10px;color:var(–t3);margin-bottom:3px;margin-top:5px}
+.prog-track{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.ok{background:var(–green)}.warn{background:var(–gold)}.over{background:var(–red)}
+
+/* STAT GRID */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:8px 14px 0}
+.sc{background:var(–card);border:1px solid var(–b2);border-radius:var(–rl);padding:12px 14px}
+.sc-lbl{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(–t3);margin-bottom:4px}
+.sc-val{font-size:20px;font-weight:800;font-family:‘DM Mono’,monospace}
+
+/* SEC */
+.sec{display:flex;justify-content:space-between;align-items:center;padding:14px 14px 5px}
+.sec-lbl{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(–t3)}
+
+/* CHIPS */
+.chips{display:flex;gap:4px;flex-wrap:wrap;padding:0 14px 8px}
+.chip{padding:4px 11px;border-radius:18px;border:1px solid var(–b2);background:none;font-size:11px;font-weight:700;color:var(–t3);cursor:pointer;font-family:‘DM Sans’,sans-serif;transition:all .15s;white-space:nowrap}
+.chip.active{background:var(–card2);color:var(–t1);border-color:var(–b3)}
+.chip:hover:not(.active){border-color:var(–gold);color:var(–gold)}
+.chip.sm{font-size:10px;padding:3px 9px}
+
+/* DEAL CARDS */
+.dl{padding:0 14px;display:flex;flex-direction:column;gap:6px}
+.dc{background:var(–card);border:1px solid var(–b1);border-radius:var(–rl);padding:12px 14px;cursor:pointer;transition:background .12s}
+.dc:active{background:var(–card2)}
+.dc.fq{border-left:3px solid var(–amber)}
+.dc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.dc-name{font-size:14px;font-weight:700}
+.dc-banker{font-size:11px;color:var(–amber);margin-top:1px}
+.dc-right{text-align:right;flex-shrink:0}
+.dc-amt{font-size:14px;font-weight:800;font-family:‘DM Mono’,monospace;color:var(–accent)}
+.dc-amt.own{color:var(–gold)}
+.dc-meta{display:flex;align-items:center;gap:5px;margin-top:6px;flex-wrap:wrap}
+.badge{padding:2px 7px;border-radius:9px;font-size:10px;font-weight:700}
+.bj{background:rgba(77,168,255,.15);color:var(–accent)}
+.bp{background:rgba(52,201,122,.15);color:var(–green)}
+.bo{background:rgba(255,207,92,.15);color:var(–gold)}
+.bs{background:rgba(167,139,250,.15);color:var(–purple)}
+.bsc{background:var(–card2);color:var(–t2);border:1px solid var(–b1)}
+.dc-date{font-size:10px;color:var(–t3);margin-left:auto}
+.sch-card{background:var(–card);border:1px solid var(–b1);border-radius:var(–rl);padding:10px 13px;display:flex;align-items:center;gap:9px;cursor:pointer}
+.sch-dot{width:7px;height:7px;border-radius:50%;background:var(–purple);flex-shrink:0}
+
+/* EMPTY */
+.empty{text-align:center;padding:44px 24px}
+.empty-ico{font-size:36px;margin-bottom:8px}
+
+/* PLAN CARDS */
+.plan-card{background:var(–card2);border-radius:var(–rl);padding:14px 15px;margin-bottom:7px}
+.plan-big{font-size:28px;font-weight:800;font-family:‘DM Mono’,monospace;letter-spacing:-1px;line-height:1}
+.plan-sub{font-size:11px;color:var(–t2);margin-top:3px}
+
+/* SCE GRID */
+.sgrid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.sce-c{background:var(–card);border:1px solid var(–b1);border-radius:var(–rl);padding:11px 13px}
+.sce-nm{font-size:10px;color:var(–t3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;line-height:1.3}
+.sce-n{font-size:20px;font-weight:800}
+.sce-a{font-size:11px;color:var(–t2);margin-top:2px}
+
+/* SETT */
+.sett-card{background:var(–card);border:1px solid var(–b2);border-radius:var(–rxl);overflow:hidden;margin-bottom:9px}
+.sett-h{padding:13px 15px;border-bottom:1px solid var(–b1)}
+.sett-t{font-size:13px;font-weight:700;margin-bottom:2px}
+.sett-d{font-size:11px;color:var(–t2);line-height:1.55}
+.sett-b{padding:13px 15px;display:flex;flex-direction:column;gap:7px}
+.btn-s{width:100%;padding:12px;border-radius:var(–r);background:var(–card2);color:var(–t2);border:1px solid var(–b2);font-size:13px;font-weight:600;cursor:pointer;font-family:‘DM Sans’,sans-serif;text-align:center;transition:all .15s}
+.btn-s:hover{border-color:var(–b3);color:var(–t1)}
+.imp-status{font-size:12px;color:var(–t2);line-height:1.7;display:none;margin-top:5px;padding:9px 11px;background:var(–card2);border-radius:var(–r)}
+
+/* MODAL */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:none;align-items:flex-end;backdrop-filter:blur(4px)}
+.mbg.open{display:flex}
+.ms{background:var(–card);border-radius:23px 23px 0 0;width:100%;max-height:94dvh;overflow-y:auto;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));animation:su .22s cubic-bezier(.22,.68,0,1.2) both;scrollbar-width:none}
+.ms::-webkit-scrollbar{display:none}
+@keyframes su{from{transform:translateY(110%)}to{transform:translateY(0)}}
+.mh{width:36px;height:3px;background:rgba(255,255,255,.15);border-radius:2px;margin:11px auto 0}
+.mt{font-size:18px;font-weight:800;letter-spacing:-.3px;padding:11px 17px 13px;border-bottom:1px solid var(–b1)}
+
+/* FORM */
+.fs{padding:11px 17px 0}
+.fl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(–t3);margin-bottom:5px;display:block}
+.fi{width:100%;background:var(–card2);border:1px solid var(–b2);border-radius:var(–r);padding:10px 12px;font-size:15px;font-family:‘DM Sans’,sans-serif;color:var(–t1);outline:none;transition:border-color .15s}
+.fi:focus{border-color:var(–gold)}
+.fi[readonly]{color:var(–t3);background:rgba(255,255,255,.03)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:11px 17px 0}
+.fw{font-size:11px;color:var(–amber);font-weight:600;margin-top:4px;display:none}
+.fw.show{display:block}
+.fiq{display:none;margin-top:3px;font-size:10px;color:var(–amber);font-weight:700;background:var(–amber-bg);padding:3px 8px;border-radius:8px;width:fit-content}
+.fiq.show{display:block}
+.tgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:11px 17px 0}
+.tb{padding:9px 5px;border-radius:var(–r);border:1.5px solid var(–b2);background:var(–card2);font-size:12px;font-weight:700;color:var(–t3);cursor:pointer;text-align:center;font-family:‘DM Sans’,sans-serif;transition:all .15s}
+.tb.active{border-color:var(–gold);background:var(–gold-bg);color:var(–gold)}
+.sbgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:11px 17px 0}
+.sb{padding:9px 7px;border-radius:var(–r);border:1.5px solid var(–b2);background:var(–card2);font-size:11px;font-weight:700;color:var(–t3);cursor:pointer;text-align:center;font-family:‘DM Sans’,sans-serif;transition:all .15s;line-height:1.3}
+.sb.active{border-color:var(–accent);background:rgba(77,168,255,.12);color:var(–accent)}
+.ftog{display:flex;align-items:center;gap:9px;padding:11px 17px 0;cursor:pointer}
+.ftog input[type=checkbox]{width:16px;height:16px;accent-color:var(–gold);cursor:pointer;flex-shrink:0}
+.ftog-l{font-size:13px;font-weight:600;color:var(–t2)}
+.btn-p{display:block;width:calc(100% - 34px);margin:13px 17px 0;padding:14px;background:var(–gold);color:#0b1120;border:none;border-radius:var(–r);font-size:15px;font-weight:800;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.btn-p:active{opacity:.85}
+.brow{display:flex;gap:7px;padding:9px 17px 0}
+.btn-d{flex:1;padding:12px;border-radius:var(–r);border:1px solid var(–b1);background:var(–red-bg);color:var(–red);font-size:14px;font-weight:700;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.btn-g{flex:1;padding:12px;border-radius:var(–r);border:1px solid var(–b1);background:var(–card2);color:var(–t2);font-size:14px;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+
+/* TOAST */
+#toast{position:fixed;bottom:calc(96px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(–card3);color:var(–t1);border:1px solid var(–b2);padding:8px 16px;border-radius:18px;font-size:13px;font-weight:600;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+#toast.show{opacity:1}
+#dbc{position:fixed;bottom:calc(8px + env(safe-area-inset-bottom,0px));left:12px;background:var(–card2);border:1px solid var(–b1);border-radius:14px;padding:4px 9px;font-size:10px;color:var(–t3);display:flex;align-items:center;gap:4px;z-index:80;opacity:1;transition:opacity .3s;pointer-events:none}
+#dbc .dot{width:5px;height:5px;border-radius:50%;background:var(–green)}
+#dbc.err .dot{background:var(–red)}
+#dbc.hide{opacity:0}
+.vbar{text-align:center;padding:22px 0 6px;font-size:10px;color:var(–t3);letter-spacing:.06em}
+</style>
+
+</head>
+<body>
+<div id="app">
+
+<header id="hdr">
+  <div class="logo"><div class="logo-ico">💰</div>Investice</div>
+  <div class="q-pill"><span class="q-dot"></span><span id="qpill">Q?/????</span></div>
+</header>
+
+<div id="content">
+
+  <!-- PŘEHLED -->
+
+  <div class="view active" id="view-prehled">
+    <div class="qnav" id="qnav"></div>
+    <div class="hero" id="hero"></div>
+    <div class="sgrid" id="sgrid"></div>
+    <div class="sec"><span class="sec-lbl">Záznamy</span><span id="pcnt" style="font-size:11px;color:var(--t3)"></span></div>
+    <div class="chips" id="chips-p"></div>
+    <div class="dl" id="dl"></div>
+    <div id="dl-empty" class="empty" style="display:none"><div class="empty-ico">📭</div><div style="font-size:14px;font-weight:700">Žádné záznamy</div><div style="font-size:12px;color:var(--t2);margin-top:4px">Přidej první kliknutím níže.</div></div>
+    <div class="vbar">Investiční Tracker v2.0</div>
+  </div>
+
+  <!-- PLÁN -->
+
+  <div class="view" id="view-plan">
+    <div class="qnav" id="qnav2"></div>
+    <div style="padding:10px 14px 0">
+      <div style="background:var(--card);border:1px solid var(--b2);border-radius:var(--rxl);overflow:hidden;margin-bottom:9px">
+        <div style="padding:13px 15px;border-bottom:1px solid var(--b1)">
+          <div style="font-size:13px;font-weight:700">🎯 Kvartální plán</div>
+          <div style="font-size:11px;color:var(--t2);line-height:1.5;margin-top:2px">Plán se ukládá per kvartál a zůstane zachován.</div>
+        </div>
+        <div style="padding:13px 15px">
+          <div class="fr" style="padding:0;gap:9px">
+            <div><label class="fl">Plán jednorázové (Kč)</label><input class="fi" type="number" id="plan-j" placeholder="10 000 000" oninput="savePlansD()"></div>
+            <div><label class="fl">Plán pravidelné (Kč)</label><input class="fi" type="number" id="plan-p" placeholder="2 000 000" oninput="savePlansD()"></div>
+          </div>
+        </div>
+      </div>
+      <div class="chips" id="chips-plan" style="padding:0 0 8px"></div>
+      <div id="plan-prog"></div>
+      <div style="background:var(--card);border:1px solid var(--b2);border-radius:var(--rxl);overflow:hidden;margin-bottom:9px">
+        <div style="padding:13px 15px;border-bottom:1px solid var(--b1);font-size:13px;font-weight:700">Rozpad podle scénáře</div>
+        <div style="padding:11px 13px" id="sce-inner"></div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--b2);border-radius:var(--rxl);overflow:hidden;margin-bottom:9px">
+        <div style="padding:13px 15px;border-bottom:1px solid var(--b1);font-size:13px;font-weight:700">📅 Schůzky bez obchodu</div>
+        <div id="sch-list" style="padding:12px 14px;font-size:13px;color:var(--t2)">—</div>
+      </div>
+    </div>
+    <div class="vbar">Investiční Tracker v2.0</div>
+  </div>
+
+  <!-- NASTAVENÍ -->
+
+  <div class="view" id="view-sett">
+    <div style="padding:10px 14px">
+      <div class="sett-card">
+        <div class="sett-h"><div class="sett-t">Export dat</div><div class="sett-d">Selektivní export podle bankéřů. Excel obsahuje souhrn, detail, scénáře a bankéře.</div></div>
+        <div class="sett-b">
+          <div style="font-size:11px;color:var(--t3);font-weight:700">Filtr bankéřů pro export:</div>
+          <div class="chips" id="chips-exp" style="padding:0;flex-wrap:wrap;gap:4px"></div>
+          <button class="btn-s" onclick="exportExcel()">📊 Exportovat do Excelu</button>
+        </div>
+      </div>
+      <div class="sett-card">
+        <div class="sett-h"><div class="sett-t">Import & záloha</div><div class="sett-d">Import z Excelu nebo JSON zálohy. Duplikáty se přeskočí.</div></div>
+        <div class="sett-b">
+          <input type="file" id="imp-file" accept=".xlsx,.json" style="display:none">
+          <button class="btn-s" onclick="document.getElementById('imp-file').click()">📥 Importovat (.xlsx / .json)</button>
+          <button class="btn-s" onclick="exportJSON()">💾 Záloha JSON</button>
+          <div class="imp-status" id="imp-st"></div>
+        </div>
+      </div>
+      <div class="sett-card">
+        <div class="sett-h"><div class="sett-t">O aplikaci</div><div class="sett-d">Data jsou uložena lokálně v IndexedDB v Safari/prohlížeči. Nikam se neodesílají.</div></div>
+        <div class="sett-b"><div id="sett-info" style="font-size:12px;color:var(--t2);line-height:1.9"></div></div>
+      </div>
+    </div>
+    <div class="vbar">Investiční Tracker v2.0 · Data lokálně 🔒</div>
+  </div>
+
+</div><!-- /content -->
+
+<nav id="bnav">
+  <button class="bt active" data-v="prehled"><span class="bi">📋</span>Přehled</button>
+  <button class="bt" data-v="plan"><span class="bi">📈</span>Plán</button>
+  <button class="bt" data-v="sett"><span class="bi">⚙️</span>Nastavení</button>
+</nav>
+</div>
+
+<button id="fab" onclick="openAdd()"><span style="font-size:19px;font-weight:300">＋</span>Přidat</button>
+
+<!-- MODAL ADD/EDIT -->
+
+<div class="mbg" id="m-add">
+<div class="ms">
+  <div class="mh"></div>
+  <div class="mt" id="m-title">Nový záznam</div>
+  <label class="ftog"><input type="checkbox" id="f-sch" onchange="togSch()"><span class="ftog-l">📅 Pouze schůzka (bez obchodu)</span></label>
+  <div class="fs"><label class="fl">Jméno klienta</label><input class="fi" id="f-kl" type="text" placeholder="Jan Novák"></div>
+  <div class="fr">
+    <div><label class="fl">Datum schůzky *</label><input class="fi" id="f-dt" type="date"></div>
+    <div id="f-sp-w"><label class="fl">Spolupráce</label><select class="fi" id="f-sp" onchange="onSp()"><option>Sám</option><option>S bankéřem</option></select></div>
+  </div>
+  <div class="fs" id="f-bn-r" style="display:none"><label class="fl">Jméno bankéře</label><input class="fi" id="f-bn" type="text" placeholder="Petr Svoboda"></div>
+  <div id="ob-fields">
+    <div class="fr">
+      <div><label class="fl">Datum realizace</label><input class="fi" id="f-real" type="date" oninput="autoDate()"></div>
+      <div><label class="fl">Typ fondu</label><select class="fi" id="f-fond" onchange="autoDate()"><option>Český (+3 dny)</option><option>Zahraniční (+5 dní)</option></select></div>
+    </div>
+    <div class="fs"><label class="fl">Datum připsání (auto)</label><input class="fi" id="f-prip" readonly placeholder="—"><div class="fiq" id="f-qw">⚠️ Připsání v jiném kvartálu</div></div>
+    <div class="fs"><label class="fl">Typ investice</label></div>
+    <div class="tgrid">
+      <button class="tb active" data-typ="Jednorázová">Jednorázová</button>
+      <button class="tb" data-typ="Pravidelná">Pravidelná</button>
+      <button class="tb" data-typ="Obojí">Obojí</button>
+    </div>
+    <div class="fs" id="cj-w"><label class="fl" id="cj-lbl">Částka (Kč)</label><input class="fi" id="f-c" type="number" inputmode="numeric" placeholder="300 000" oninput="updWarn()"><div class="fw" id="wj"></div></div>
+    <div class="fs" id="cp-w" style="display:none"><label class="fl">Pravidelná částka (Kč/měs.)</label><input class="fi" id="f-cp" type="number" inputmode="numeric" placeholder="5 000" oninput="updWarn()"><div class="fw" id="wp"></div></div>
+    <div class="fs"><label class="fl">Scénář</label></div>
+    <div class="sbgrid" id="sce-btns"></div>
+  </div>
+  <div class="fs"><label class="fl">Poznámka</label><input class="fi" id="f-poz" type="text" placeholder="Volitelná..."></div>
+  <button class="btn-p" id="btn-sv" onclick="saveZ()">✅ Přidat záznam</button>
+  <div style="height:10px"></div>
+</div>
+</div>
+
+<!-- MODAL DETAIL -->
+
+<div class="mbg" id="m-det">
+<div class="ms">
+  <div class="mh"></div>
+  <div class="mt" id="det-t">Detail</div>
+  <div style="padding:13px 17px;font-size:13px;color:var(--t2);line-height:2.1" id="det-b"></div>
+  <div class="brow">
+    <button class="btn-d" onclick="delZ()">🗑 Smazat</button>
+    <button class="btn-g" onclick="editFromDet()">✏️ Upravit</button>
+    <button class="btn-g" onclick="closeM('m-det')">Zavřít</button>
+  </div>
+  <div style="height:8px"></div>
+</div>
+</div>
+
+<div id="dbc"><div class="dot"></div><span id="dbt">DB</span></div>
+<div id="toast"></div>
+
+<script>
+'use strict';
+const SCENARE=['Nové peníze','Výměna + nové peníze','Výměna','Prodej','Prodej + výměna'];
+const DB_NAME='investice_v2',DB_VER=2;
+let db=null,zaznamy=[],editId=null,curV='prehled',selQ=null;
+let bfP=[],bfPl=[],bfEx=[];
+let curTyp='Jednorázová',curSce=SCENARE[0],onlySch=false,detId=null;
+
+// DB
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VER);r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('zaznamy'))d.createObjectStore('zaznamy',{keyPath:'id'});if(!d.objectStoreNames.contains('plans'))d.createObjectStore('plans',{keyPath:'key'})};r.onsuccess=e=>res(e.target.result);r.onerror=e=>rej(e.target.error)})}
+const dga=s=>new Promise((r,j)=>{const q=db.transaction(s,'readonly').objectStore(s).getAll();q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)});
+const dpu=(s,d)=>new Promise((r,j)=>{const q=db.transaction(s,'readwrite').objectStore(s).put(d);q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)});
+const ddl=(s,id)=>new Promise((r,j)=>{const q=db.transaction(s,'readwrite').objectStore(s).delete(id);q.onsuccess=()=>r();q.onerror=()=>j(q.error)});
+const dge=(s,k)=>new Promise((r,j)=>{const q=db.transaction(s,'readonly').objectStore(s).get(k);q.onsuccess=()=>r(q.result||null);q.onerror=()=>j(q.error)});
+
+// Quarter
+function curQ(){const n=new Date();return{year:n.getFullYear(),q:Math.floor(n.getMonth()/3)+1}}
+function qStart(y,q){return new Date(y,(q-1)*3,1)}
+function qEnd(y,q){return new Date(y,(q-1)*3+3,0)}
+function qEq(a,b){return a&&b&&a.year===b.year&&a.q===b.q}
+function qKey(y,q){return`${y}-Q${q}`}
+function dateToQ(s){if(!s)return null;const d=new Date(s);return{year:d.getFullYear(),q:Math.floor(d.getMonth()/3)+1}}
+function zazQ(z){return dateToQ(z.datumPripsani||z.datumRealizace||z.datumSchuzky)}
+function qMeta(){
+  const{year,q}=selQ,cq=curQ(),start=qStart(year,q),end=qEnd(year,q),now=new Date();
+  const total=Math.floor((end-start)/86400000)+1;
+  const elapsed=qEq({year,q},cq)?Math.floor((now-start)/86400000)+1:total;
+  return{year,q,total,elapsed,ratio:elapsed/total,isCur:qEq({year,q},cq)};
+}
+
+// Utils
+const fK=v=>(v&&!isNaN(v)&&Number(v)!==0)?new Intl.NumberFormat('cs-CZ',{style:'currency',currency:'CZK',maximumFractionDigits:0}).format(v):'—';
+const addD=(s,d)=>{if(!s)return'';const dt=new Date(s);dt.setDate(dt.getDate()+d);return dt.toISOString().split('T')[0]};
+const fDt=s=>s?new Date(s).toLocaleDateString('cs-CZ',{day:'numeric',month:'short'}):'—';
+const fDtF=s=>s?new Date(s).toLocaleDateString('cs-CZ',{day:'numeric',month:'long',year:'numeric'}):'—';
+
+let _tt;
+function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>e.classList.remove('show'),2400)}
+function dbchip(ok,t){const e=document.getElementById('dbc');e.classList.toggle('err',!ok);e.classList.remove('hide');document.getElementById('dbt').textContent=t;setTimeout(()=>e.classList.add('hide'),2800)}
+function closeM(id){document.getElementById(id).classList.remove('open')}
+
+// Plans
+let _pd;
+function savePlansD(){clearTimeout(_pd);_pd=setTimeout(savePlans,600)}
+async function savePlans(){
+  const j=Number(document.getElementById('plan-j')?.value)||0;
+  const p=Number(document.getElementById('plan-p')?.value)||0;
+  await dpu('plans',{key:qKey(selQ.year,selQ.q),j,p});
+  renderPlan();
+}
+async function loadPlans(){
+  const pl=await dge('plans',qKey(selQ.year,selQ.q));
+  const pj=document.getElementById('plan-j'),pp=document.getElementById('plan-p');
+  if(pj)pj.value=pl?.j||'';if(pp)pp.value=pl?.p||'';
+}
+
+// Bankers
+function getBankers(){return[...new Set(zaznamy.filter(z=>z.banker).map(z=>z.banker))].sort()}
+function buildChips(cid,af,fn,sm=false){
+  const el=document.getElementById(cid);if(!el)return;
+  const bs=getBankers();
+  const s=sm?'class="chip sm"':'class="chip"';
+  el.innerHTML=[`<button ${s} style="${af.length?'':'background:var(--card2);color:var(--t1);border-color:var(--b3)'}" onclick="${fn}('__all__')">Všichni</button>`,
+    ...bs.map(b=>`<button ${s} style="${af.includes(b)?'background:var(--card2);color:var(--t1);border-color:var(--b3)':''}" onclick="${fn}('${b.replace(/'/g,"\\'")}')">👤 ${b}</button>`)
+  ].join('')
+}
+function togBP(n){if(n==='__all__')bfP=[];else{const i=bfP.indexOf(n);i>=0?bfP.splice(i,1):bfP.push(n)}renderPrehled()}
+function togBPl(n){if(n==='__all__')bfPl=[];else{const i=bfPl.indexOf(n);i>=0?bfPl.splice(i,1):bfPl.push(n)}renderPlan()}
+function togBEx(n){if(n==='__all__')bfEx=[];else{const i=bfEx.indexOf(n);i>=0?bfEx.splice(i,1):bfEx.push(n)}buildChips('chips-exp',bfEx,'togBEx',true)}
+
+function filtZ(bf){return zaznamy.filter(z=>{if(!qEq(zazQ(z),selQ))return false;return bf.length?bf.includes(z.banker):true})}
+
+// Q Nav
+function buildQNav(cid){
+  const el=document.getElementById(cid);if(!el)return;
+  const cq=curQ();const qs=[];let{year,q}=cq;
+  for(let i=0;i<6;i++){qs.push({year,q});q--;if(q<1){q=4;year--}}
+  qs.reverse();
+  el.innerHTML=qs.map(({year:y,q:qn})=>`<button class="qb ${qEq({year:y,q:qn},selQ)?'active':''}" onclick="selQF(${y},${qn})">Q${qn}/${y}</button>`).join('')
+}
+function selQF(year,q){
+  selQ={year,q};
+  buildQNav('qnav');buildQNav('qnav2');
+  const{elapsed,total,isCur}=qMeta();
+  document.getElementById('qpill').textContent=`Q${q}/${year} · ${isCur?`den ${elapsed}/${total}`:'hotovo'}`;
+  loadPlans().then(()=>renderAll());
+}
+
+// Init
+async function init(){
+  selQ=curQ();
+  try{
+    db=await openDB();dbchip(true,'DB OK');
+    zaznamy=await dga('zaznamy');
+    await loadPlans();
+    const{q,year,elapsed,total,isCur}=qMeta();
+    document.getElementById('qpill').textContent=`Q${q}/${year} · ${isCur?`den ${elapsed}/${total}`:'hotovo'}`;
+    buildQNav('qnav');buildQNav('qnav2');
+    initSce();renderAll();
+  }catch(e){dbchip(false,'Chyba DB');console.error(e)}
+}
+
+function renderAll(){
+  buildChips('chips-p',bfP,'togBP');
+  buildChips('chips-plan',bfPl,'togBPl',true);
+  buildChips('chips-exp',bfEx,'togBEx',true);
+  renderPrehled();
+  if(curV==='plan')renderPlan();
+  if(curV==='sett')renderSett();
+}
+
+// Nav
+function navTo(v){
+  curV=v;
+  document.querySelectorAll('.view').forEach(e=>e.classList.toggle('active',e.id==='view-'+v));
+  document.querySelectorAll('.bt').forEach(b=>b.classList.toggle('active',b.dataset.v===v));
+  document.getElementById('fab').classList.toggle('hidden',v==='sett');
+  if(v==='plan'){buildQNav('qnav2');renderPlan()}
+  if(v==='sett')renderSett();
+  if(v==='prehled')renderPrehled();
+}
+document.querySelectorAll('.bt').forEach(b=>b.addEventListener('click',()=>navTo(b.dataset.v)));
+
+// Render Přehled
+function renderPrehled(){
+  buildChips('chips-p',bfP,'togBP');
+  const data=filtZ(bfP);
+  const ob=data.filter(z=>!z.jenSch);
+  const{q,year,elapsed,total,ratio}=qMeta();
+  const j=ob.reduce((s,z)=>s+(z.pocJ||0),0);
+  const p=ob.reduce((s,z)=>s+(z.pocP||0),0);
+  const pl=getPl();
+  const pj=pl.j,pp=pl.p;
+  const aj=Math.round(ratio*pj),ap=Math.round(ratio*pp);
+  const pctJ=aj?Math.min(100,Math.round(j/aj*100)):null;
+  const pctP=ap?Math.min(100,Math.round(p/ap*100)):null;
+  const bc=x=>x===null?'ok':x>=100?'over':x>=70?'warn':'ok';
+
+  document.getElementById('hero').innerHTML=`
+    <div class="hero-lbl">Q${q}/${year} · den ${elapsed}/${total}</div>
+    <div class="hero-val" style="color:var(--gold)">${fK(j+p)}</div>
+    <div class="hero-sub">${ob.length} obchodů · ${data.filter(z=>z.jenSch).length} schůzek${bfP.length?' · Filtr: '+bfP.join(', '):''}</div>
+    <div class="hero-pills">
+      <div class="hp"><div class="hp-lbl">Jednorázové</div><div class="hp-val j">${fK(j)}</div></div>
+      <div class="hp"><div class="hp-lbl">Pravidelné</div><div class="hp-val p">${fK(p)}</div></div>
+    </div>
+    ${pj||pp?`<div class="prog">
+      ${pj?`<div class="prog-row"><span>J: ${pctJ??0}% alikvóty</span><span>${fK(j)} / ${fK(aj)}</span></div><div class="prog-track"><div class="prog-fill ${bc(pctJ)}" style="width:${Math.min(100,pctJ??0)}%"></div></div>`:''}
+      ${pp?`<div class="prog-row"><span>P: ${pctP??0}% alikvóty</span><span>${fK(p)} / ${fK(ap)}</span></div><div class="prog-track"><div class="prog-fill ${bc(pctP)}" style="width:${Math.min(100,pctP??0)}%"></div></div>`:''}
+    </div>`:''}`;
+
+  document.getElementById('sgrid').innerHTML=`
+    <div class="sc"><div class="sc-lbl">📦 Obchodů</div><div class="sc-val" style="color:var(--accent)">${ob.length}</div></div>
+    <div class="sc"><div class="sc-lbl">📅 Schůzek</div><div class="sc-val" style="color:var(--purple)">${data.filter(z=>z.jenSch).length}</div></div>`;
+
+  document.getElementById('pcnt').textContent=`${data.length} záznamů`;
+  const dlEl=document.getElementById('dl'),emEl=document.getElementById('dl-empty');
+  if(!data.length){dlEl.innerHTML='';emEl.style.display='';return}
+  emEl.style.display='none';
+  const sorted=[...data].sort((a,b)=>(b.datumSchuzky||'').localeCompare(a.datumSchuzky||''));
+  dlEl.innerHTML=sorted.map(z=>{
+    if(z.jenSch)return`<div class="sch-card" onclick="openDet(${z.id})"><div class="sch-dot"></div><div style="flex:1"><div style="font-size:13px;font-weight:600">${z.klient||'—'}</div><div style="font-size:11px;color:var(--t3)">${fDt(z.datumSchuzky)} · Schůzka${z.poznamka?' · '+z.poznamka:''}</div></div><span class="badge bs">📅</span></div>`;
+    const fq=!qEq(zazQ(z),selQ);
+    const tc=z.typ==='Jednorázová'?'bj':z.typ==='Pravidelná'?'bp':'bo';
+    return`<div class="dc${fq?' fq':''}" onclick="openDet(${z.id})">
+      <div class="dc-top">
+        <div><div class="dc-name">${z.klient||'—'}</div>${z.banker?`<div class="dc-banker">👥 ${z.banker}</div>`:''}</div>
+        <div class="dc-right"><div class="dc-amt${z.spoluprace==='Sám'?' own':''}">${fK(z.pocJ+z.pocP)}</div><div style="font-size:10px;color:var(--t3)">${z.spoluprace==='S bankéřem'?'50% sdíleno':'vlastní'}</div></div>
+      </div>
+      <div class="dc-meta"><span class="badge ${tc}">${z.typ}</span><span class="badge bsc">${z.scenar}</span><span class="dc-date">${fDt(z.datumSchuzky)}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function getPl(){return{j:Number(document.getElementById('plan-j')?.value)||0,p:Number(document.getElementById('plan-p')?.value)||0}}
+
+// Render Plan
+function renderPlan(){
+  buildChips('chips-plan',bfPl,'togBPl',true);
+  const{q,year,elapsed,total,ratio}=qMeta();
+  const data=filtZ(bfPl).filter(z=>!z.jenSch);
+  const j=data.reduce((s,z)=>s+(z.pocJ||0),0);
+  const p=data.reduce((s,z)=>s+(z.pocP||0),0);
+  const{j:pj,p:pp}=getPl();
+  const aj=Math.round(ratio*pj),ap=Math.round(ratio*pp);
+  const pctJ=aj?Math.min(100,Math.round(j/aj*100)):null;
+  const pctP=ap?Math.min(100,Math.round(p/ap*100)):null;
+  const bc=x=>x===null?'#4d6080':x>=100?'var(--green)':x>=70?'var(--gold)':'var(--red)';
+
+  const card=(lbl,val,aliq,plan,pct)=>`<div class="plan-card">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:5px">${lbl}</div>
+    <div class="plan-big">${fK(val)}</div><div class="plan-sub">splněno</div>
+    ${plan?`<div style="margin-top:9px;display:flex;justify-content:space-between;font-size:10px;color:var(--t3)"><span>Alikvótní cíl · den ${elapsed}/${total}</span><span>${fK(aliq)}</span></div>
+    <div class="prog-track" style="margin-top:4px"><div class="prog-fill" style="width:${Math.min(100,pct??0)}%;background:${bc(pct)}"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px"><span style="color:${bc(pct)};font-weight:700">${pct??0}% alikvóty</span><span style="color:var(--t3)">Zbývá: ${fK(Math.max(0,plan-val))}</span></div>`:''}
+  </div>`;
+
+  document.getElementById('plan-prog').innerHTML=card('📦 Jednorázové',j,aj,pj,pctJ)+card('🔄 Pravidelné',p,ap,pp,pctP);
+
+  const all=filtZ(bfPl).filter(z=>!z.jenSch);
+  document.getElementById('sce-inner').innerHTML=`<div class="sgrid2">`+SCENARE.map(s=>{
+    const g=all.filter(z=>z.scenar===s);
+    const sj=g.reduce((a,z)=>a+(z.pocJ||0),0);
+    const sp=g.reduce((a,z)=>a+(z.pocP||0),0);
+    return`<div class="sce-c"><div class="sce-nm">${s}</div><div class="sce-n">${g.length}×</div>${sj?`<div class="sce-a" style="color:var(--accent)">J: ${fK(sj)}</div>`:''}${sp?`<div class="sce-a" style="color:var(--green)">P: ${fK(sp)}</div>`:''}</div>`;
+  }).join('')+'</div>';
+
+  const sch=filtZ(bfPl).filter(z=>z.jenSch);
+  document.getElementById('sch-list').innerHTML=sch.length
+    ?sch.map(z=>`<div style="padding:4px 0;border-bottom:1px solid var(--b1);font-size:12px">${fDt(z.datumSchuzky)} — <strong style="color:var(--t1)">${z.klient||'—'}</strong>${z.poznamka?' · '+z.poznamka:''}</div>`).join('')
+    :'<span style="color:var(--t3)">Žádné.</span>';
+}
+
+// Render Sett
+function renderSett(){
+  buildChips('chips-exp',bfEx,'togBEx',true);
+  const ob=zaznamy.filter(z=>!z.jenSch).length;
+  const sc=zaznamy.filter(z=>z.jenSch).length;
+  document.getElementById('sett-info').innerHTML=`Celkem: <strong>${zaznamy.length}</strong> záznamů<br>Obchodů: <strong>${ob}</strong> · Schůzek: <strong>${sc}</strong><br>Bankéři: <strong>${getBankers().join(', ')||'žádní'}</strong>`;
+}
+
+// Form
+function initSce(){
+  document.getElementById('sce-btns').innerHTML=SCENARE.map(s=>`<button class="sb ${s===curSce?'active':''}" data-sce="${s}" onclick="selSce('${s}')">${s}</button>`).join('');
+}
+function selSce(s){curSce=s;document.querySelectorAll('[data-sce]').forEach(b=>b.classList.toggle('active',b.dataset.sce===s))}
+
+document.querySelectorAll('[data-typ]').forEach(b=>b.addEventListener('click',()=>{
+  curTyp=b.dataset.typ;
+  document.querySelectorAll('[data-typ]').forEach(x=>x.classList.toggle('active',x.dataset.typ===curTyp));
+  const ob=curTyp==='Obojí';
+  document.getElementById('cp-w').style.display=ob?'':'none';
+  document.getElementById('cj-lbl').textContent=ob?'Jednorázová částka (Kč)':'Částka (Kč)';
+  updWarn();
+}));
+
+function onSp(){
+  const sb=document.getElementById('f-sp').value==='S bankéřem';
+  document.getElementById('f-bn-r').style.display=sb?'':'none';
+  updWarn();
+}
+function togSch(){
+  onlySch=document.getElementById('f-sch').checked;
+  document.getElementById('ob-fields').style.display=onlySch?'none':'';
+  document.getElementById('f-sp-w').style.display=onlySch?'none':'';
+  document.getElementById('f-bn-r').style.display='none';
+}
+function autoDate(){
+  const r=document.getElementById('f-real').value,f=document.getElementById('f-fond').value;
+  const pr=r?addD(r,f.startsWith('Český')?3:5):'';
+  document.getElementById('f-prip').value=pr||'';
+  const w=document.getElementById('f-qw');
+  if(pr&&selQ){const pq=dateToQ(pr);if(pq&&!qEq(pq,selQ)){w.textContent=`⚠️ Připsání v Q${pq.q}/${pq.year}`;w.classList.add('show')}else w.classList.remove('show')}
+  else w.classList.remove('show');
+}
+function updWarn(){
+  const half=document.getElementById('f-sp').value==='S bankéřem';
+  const wj=document.getElementById('wj'),wp=document.getElementById('wp');
+  if(!half){wj.classList.remove('show');wp.classList.remove('show');return}
+  const v1=Number(document.getElementById('f-c').value);
+  const v2=Number(document.getElementById('f-cp').value);
+  if(v1){wj.textContent=`50% = ${fK(v1/2)}`;wj.classList.add('show')}else wj.classList.remove('show');
+  if(curTyp==='Obojí'&&v2){wp.textContent=`50% = ${fK(v2/2)}`;wp.classList.add('show')}else wp.classList.remove('show');
+}
+
+function openAdd(){
+  editId=null;
+  document.getElementById('m-title').textContent='Nový záznam';
+  document.getElementById('btn-sv').textContent='✅ Přidat záznam';
+  ['f-kl','f-bn','f-real','f-prip','f-c','f-cp','f-poz'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
+  document.getElementById('f-dt').value=new Date().toISOString().slice(0,10);
+  document.getElementById('f-fond').value='Český (+3 dny)';
+  document.getElementById('f-sp').value='Sám';
+  document.getElementById('f-sch').checked=false;
+  document.getElementById('f-qw').classList.remove('show');
+  document.getElementById('wj').classList.remove('show');
+  document.getElementById('wp').classList.remove('show');
+  onlySch=false;curTyp='Jednorázová';curSce=SCENARE[0];
+  document.getElementById('ob-fields').style.display='';
+  document.getElementById('f-sp-w').style.display='';
+  document.getElementById('f-bn-r').style.display='none';
+  document.getElementById('cp-w').style.display='none';
+  document.getElementById('cj-lbl').textContent='Částka (Kč)';
+  document.querySelectorAll('[data-typ]').forEach(b=>b.classList.toggle('active',b.dataset.typ===curTyp));
+  initSce();
+  document.getElementById('m-add').classList.add('open');
+}
+
+async function saveZ(){
+  const sch=document.getElementById('f-dt').value;
+  if(!sch){toast('Vyplň datum schůzky');return}
+  let v1=0,v2=0,pocJ=0,pocP=0;
+  if(!onlySch){
+    const half=document.getElementById('f-sp').value==='S bankéřem';
+    v1=Number(document.getElementById('f-c').value)||0;
+    v2=Number(document.getElementById('f-cp').value)||0;
+    if(curTyp==='Obojí'&&!v1&&!v2){toast('Vyplň alespoň jednu částku');return}
+    if(curTyp!=='Obojí'&&!v1){toast('Vyplň částku');return}
+    if(curTyp==='Obojí'){pocJ=half?v1/2:v1;pocP=half?v2/2:v2}
+    else if(curTyp==='Jednorázová')pocJ=half?v1/2:v1;
+    else pocP=half?v1/2:v1;
+  }
+  const prip=document.getElementById('f-prip').value;
+  const z={
+    id:editId||Date.now(),
+    klient:document.getElementById('f-kl').value.trim(),
+    banker:onlySch?'':document.getElementById('f-bn').value.trim(),
+    datumSchuzky:sch,
+    datumRealizace:onlySch?'':document.getElementById('f-real').value,
+    datumPripsani:onlySch?'':prip,
+    fond:onlySch?'':document.getElementById('f-fond').value,
+    spoluprace:onlySch?'Sám':document.getElementById('f-sp').value,
+    typ:onlySch?'—':curTyp,
+    castka:curTyp!=='Obojí'?v1:0,
+    castkaJ:curTyp==='Obojí'?v1:0,
+    castkaP:curTyp==='Obojí'?v2:0,
+    pocJ,pocP,
+    scenar:onlySch?'—':curSce,
+    poznamka:document.getElementById('f-poz').value.trim(),
+    jenSch:onlySch,
+    _ts:new Date().toISOString(),
+  };
+  if(editId)zaznamy=zaznamy.map(x=>x.id===editId?z:x);else zaznamy.push(z);
+  await dpu('zaznamy',z);
+  closeM('m-add');toast(editId?'Uloženo ✓':'Přidáno ✓');editId=null;
+  renderAll();navTo('prehled');
+}
+
+// Detail
+function openDet(id){
+  const z=zaznamy.find(x=>x.id===id);if(!z)return;
+  detId=id;
+  document.getElementById('det-t').textContent=z.klient||'Záznam';
+  const ln=[];
+  if(z.jenSch){ln.push('Typ: 📅 Schůzka bez obchodu')}
+  else{
+    ln.push(`Typ: ${z.typ}`);ln.push(`Scénář: ${z.scenar}`);
+    ln.push(`Fond: ${z.fond}`);ln.push(`Spolupráce: ${z.spoluprace}${z.banker?' ('+z.banker+')':''}`);
+    if(z.typ==='Obojí'){ln.push(`Částka J: ${fK(z.castkaJ)} → poč. ${fK(z.pocJ)}`);ln.push(`Částka P: ${fK(z.castkaP)}/měs. → poč. ${fK(z.pocP)}`)}
+    else ln.push(`Částka: ${fK(z.castka)} → poč. ${fK(z.pocJ+z.pocP)}`);
+  }
+  ln.push(`Schůzka: ${fDtF(z.datumSchuzky)}`);
+  if(!z.jenSch){if(z.datumRealizace)ln.push(`Realizace: ${fDtF(z.datumRealizace)}`);if(z.datumPripsani)ln.push(`Připsání: ${fDtF(z.datumPripsani)}`)}
+  if(z.poznamka)ln.push(`Poznámka: ${z.poznamka}`);
+  document.getElementById('det-b').innerHTML=ln.join('<br>');
+  document.getElementById('m-det').classList.add('open');
+}
+
+function editFromDet(){
+  const z=zaznamy.find(x=>x.id===detId);if(!z)return;
+  closeM('m-det');editId=z.id;
+  document.getElementById('m-title').textContent='Upravit záznam';
+  document.getElementById('btn-sv').textContent='💾 Uložit změny';
+  document.getElementById('f-kl').value=z.klient||'';
+  document.getElementById('f-dt').value=z.datumSchuzky||'';
+  document.getElementById('f-poz').value=z.poznamka||'';
+  onlySch=z.jenSch||false;
+  document.getElementById('f-sch').checked=onlySch;
+  document.getElementById('ob-fields').style.display=onlySch?'none':'';
+  document.getElementById('f-sp-w').style.display=onlySch?'none':'';
+  if(!onlySch){
+    document.getElementById('f-bn').value=z.banker||'';
+    document.getElementById('f-real').value=z.datumRealizace||'';
+    document.getElementById('f-prip').value=z.datumPripsani||'';
+    document.getElementById('f-fond').value=z.fond||'Český (+3 dny)';
+    document.getElementById('f-sp').value=z.spoluprace||'Sám';
+    document.getElementById('f-bn-r').style.display=z.spoluprace==='S bankéřem'?'':'none';
+    curTyp=z.typ||'Jednorázová';curSce=z.scenar||SCENARE[0];
+    if(z.typ==='Obojí'){document.getElementById('f-c').value=z.castkaJ||'';document.getElementById('f-cp').value=z.castkaP||'';document.getElementById('cp-w').style.display='';document.getElementById('cj-lbl').textContent='Jednorázová částka (Kč)'}
+    else{document.getElementById('f-c').value=z.castka||'';document.getElementById('cp-w').style.display='none';document.getElementById('cj-lbl').textContent='Částka (Kč)'}
+    document.querySelectorAll('[data-typ]').forEach(b=>b.classList.toggle('active',b.dataset.typ===curTyp));
+    initSce();
+  }
+  document.getElementById('m-add').classList.add('open');
+}
+
+async function delZ(){
+  if(!detId||!confirm('Smazat?'))return;
+  zaznamy=zaznamy.filter(x=>x.id!==detId);
+  await ddl('zaznamy',detId);
+  closeM('m-det');toast('Smazáno');renderAll();
+}
+
+// Export Excel
+function exportExcel(){
+  const{q,year,elapsed,total,ratio}=qMeta();
+  const ob=filtZ(bfEx).filter(z=>!z.jenSch);
+  const sc=filtZ(bfEx).filter(z=>z.jenSch);
+  const{j:pj,p:pp}=getPl();
+  const j=ob.reduce((s,z)=>s+(z.pocJ||0),0);
+  const p=ob.reduce((s,z)=>s+(z.pocP||0),0);
+  const aj=Math.round(ratio*pj),ap=Math.round(ratio*pp);
+  const czk=v=>({v:Number(v)||0,t:'n',z:'#,##0 "Kč"'});
+  const wb=XLSX.utils.book_new();
+  const fn=bfEx.length?`Filtr: ${bfEx.join(', ')}`:'Všichni';
+
+  // Souhrn
+  const ws1=XLSX.utils.aoa_to_sheet([
+    [`Investiční report — Q${q}/${year}`],
+    [`Vygenerováno: ${new Date().toLocaleDateString('cs-CZ')}  |  Den kvartálu: ${elapsed}/${total} (${Math.round(ratio*100)}%)`],
+    [fn],[],
+    ['Ukazatel','Jednorázové','Pravidelné'],
+    ['Kvartální plán',czk(pj),czk(pp)],
+    ['Alikvótní cíl',czk(aj),czk(ap)],
+    ['Skutečnost',czk(j),czk(p)],
+    ['Plnění alikvóty',pj?{v:j/(aj||1),t:'n',z:'0%'}:'—',pp?{v:p/(ap||1),t:'n',z:'0%'}:'—'],
+    ['Zbývá do konce Q',czk(Math.max(0,pj-j)),czk(Math.max(0,pp-p))],
+    [],[`Celkem obchodů`,{v:ob.length,t:'n'}],['Schůzky bez obchodu',{v:sc.length,t:'n'}],
+    ['S bankéřem',{v:ob.filter(z=>z.spoluprace==='S bankéřem').length,t:'n'}],
+  ]);
+  ws1['!cols']=[{wch:28},{wch:20},{wch:20}];
+  XLSX.utils.book_append_sheet(wb,ws1,'Souhrn');
+
+  // Detail
+  const hdr=['Klient','Bankéř','Datum schůzky','Datum realizace','Datum připsání','Fond','Typ','Jednorázová','Pravidelná','Poč. jednorázová','Poč. pravidelná','Spolupráce','Scénář','Poznámka'];
+  const rows=ob.map(z=>[z.klient,z.banker||'',z.datumSchuzky,z.datumRealizace||'',z.datumPripsani||'',z.fond,z.typ,
+    czk(z.typ==='Obojí'?z.castkaJ:z.typ==='Jednorázová'?z.castka:0),
+    czk(z.typ==='Obojí'?z.castkaP:z.typ==='Pravidelná'?z.castka:0),
+    czk(z.pocJ),czk(z.pocP),z.spoluprace,z.scenar,z.poznamka||'']);
+  const ws2=XLSX.utils.aoa_to_sheet([hdr,...rows]);
+  ws2['!cols']=[16,14,14,14,14,18,12,16,16,16,16,14,22,20].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb,ws2,'Detail obchodů');
+
+  // Scénáře
+  const ws3=XLSX.utils.aoa_to_sheet([['Scénář','Počet','Jednorázové','Pravidelné','Celkem'],
+    ...SCENARE.map(s=>{const g=ob.filter(z=>z.scenar===s);const sj=g.reduce((a,z)=>a+(z.pocJ||0),0);const sp=g.reduce((a,z)=>a+(z.pocP||0),0);return[s,{v:g.length,t:'n'},czk(sj),czk(sp),czk(sj+sp)]}),
+    [],[`CELKEM`,{v:ob.length,t:'n'},czk(j),czk(p),czk(j+p)]]);
+  ws3['!cols']=[30,10,20,20,20].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb,ws3,'Podle scénáře');
+
+  // Bankéři
+  const bks=[...new Set(ob.filter(z=>z.banker).map(z=>z.banker))];
+  const br=bks.map(b=>{const g=ob.filter(z=>z.banker===b);const bj=g.reduce((a,z)=>a+(z.pocJ||0),0);const bp=g.reduce((a,z)=>a+(z.pocP||0),0);return[b,{v:g.length,t:'n'},czk(bj),czk(bp),czk(bj+bp)]});
+  const sm=ob.filter(z=>!z.banker);
+  br.push(['(Sám)',{v:sm.length,t:'n'},czk(sm.reduce((a,z)=>a+(z.pocJ||0),0)),czk(sm.reduce((a,z)=>a+(z.pocP||0),0)),czk(sm.reduce((a,z)=>a+(z.pocJ||0)+(z.pocP||0),0))]);
+  const ws4=XLSX.utils.aoa_to_sheet([['Bankéř','Počet','Jednorázové','Pravidelné','Celkem'],...br]);
+  ws4['!cols']=[24,10,20,20,20].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb,ws4,'Podle bankéře');
+
+  // Schůzky
+  const ws5=XLSX.utils.aoa_to_sheet([['Datum schůzky','Klient','Poznámka'],...sc.map(z=>[z.datumSchuzky,z.klient||'',z.poznamka||''])]);
+  ws5['!cols']=[14,24,30].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb,ws5,'Schůzky bez obchodu');
+
+  XLSX.writeFile(wb,`investice_Q${q}_${year}${bfEx.length?'_'+bfEx.join('-'):''}.xlsx`);
+  toast('Excel se stahuje…');
+}
+
+// JSON
+function exportJSON(){
+  const blob=new Blob([JSON.stringify({version:2,exportedAt:new Date().toISOString(),zaznamy},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`investice_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();
+  toast('JSON záloha stažena ✓');
+}
+
+// Import
+document.getElementById('imp-file').addEventListener('change',async e=>{
+  const file=e.target.files[0];if(!file)return;e.target.value='';
+  const st=document.getElementById('imp-st');st.style.display='block';st.textContent='Načítám…';
+  try{
+    if(file.name.endsWith('.json')){
+      const data=JSON.parse(await file.text());
+      const recs=data.zaznamy||[];
+      const ex=new Set(zaznamy.map(z=>z.id));
+      let a=0,s=0;
+      for(const z of recs){if(ex.has(z.id)){s++;continue}await dpu('zaznamy',z);zaznamy.push(z);ex.add(z.id);a++}
+      st.innerHTML=`✅ <strong>JSON OK</strong> · Přidáno: <strong>${a}</strong>, přeskočeno: <strong>${s}</strong>`;
+    }else{
+      const wb=XLSX.read(await file.arrayBuffer(),{type:'array'});
+      const sheet=wb.Sheets['Detail obchodů']||wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(sheet).filter(r=>r['Datum schůzky']);
+      const ex=new Set(zaznamy.map(z=>z.datumSchuzky+'|'+z.klient+'|'+(z.castka||0)));
+      let a=0,s=0;
+      for(const r of rows){
+        const k=r['Datum schůzky']+'|'+r['Klient']+'|'+(parseFloat(r['Jednorázová'])||0);
+        if(ex.has(k)){s++;continue}
+        const z={id:Date.now()+a,klient:r['Klient']||'',banker:r['Bankéř']||'',datumSchuzky:r['Datum schůzky']||'',datumRealizace:r['Datum realizace']||'',datumPripsani:r['Datum připsání']||'',fond:r['Fond']||'Český (+3 dny)',spoluprace:r['Spolupráce']||'Sám',typ:r['Typ']||'Jednorázová',castka:parseFloat(r['Jednorázová'])||0,castkaJ:parseFloat(r['Jednorázová'])||0,castkaP:parseFloat(r['Pravidelná'])||0,pocJ:parseFloat(r['Poč. jednorázová'])||0,pocP:parseFloat(r['Poč. pravidelná'])||0,scenar:r['Scénář']||SCENARE[0],poznamka:r['Poznámka']||'',jenSch:false,_ts:new Date().toISOString()};
+        await dpu('zaznamy',z);zaznamy.push(z);ex.add(k);a++;
+      }
+      st.innerHTML=`✅ <strong>Excel OK</strong> · Přidáno: <strong>${a}</strong>, přeskočeno: <strong>${s}</strong>`;
+    }
+    toast('Import OK ✓');renderAll();
+  }catch(err){console.error(err);st.textContent='❌ Chyba: '+err.message}
+});
+
+// Close on bg
+document.getElementById('m-add').addEventListener('click',e=>{if(e.target.id==='m-add')closeM('m-add')});
+document.getElementById('m-det').addEventListener('click',e=>{if(e.target.id==='m-det')closeM('m-det')});
+
+init();
+</script>
+
+</body>
+</html>
