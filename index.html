@@ -18,12 +18,11 @@
   --bg:#0b1120;--card:#152035;--card2:#1c2d47;--card3:#243657;
   --b1:rgba(255,255,255,.07);--b2:rgba(255,255,255,.12);--b3:rgba(255,255,255,.20);
   --t1:#f0f4ff;--t2:#8fa3c8;--t3:#4d6080;
-  --accent:#4da8ff;--accent2:#2684ff;
-  --gold:#ffcf5c;--gold-bg:rgba(255,207,92,.13);
+  --accent:#4da8ff;--gold:#ffcf5c;--gold-bg:rgba(255,207,92,.13);
   --green:#34c97a;--green-bg:rgba(52,201,122,.13);
   --red:#ff6b6b;--red-bg:rgba(255,107,107,.13);
   --amber:#ff9f43;--amber-bg:rgba(255,159,67,.13);
-  --purple:#a78bfa;--purple-bg:rgba(167,139,250,.13);
+  --purple:#a78bfa;
   --r:13px;--rl:17px;--rxl:21px;
   --sh:0 2px 12px rgba(0,0,0,.35);--shm:0 4px 24px rgba(0,0,0,.5);
 }
@@ -74,15 +73,11 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 .hp{flex:1;background:rgba(255,255,255,.05);border:1px solid var(–b1);border-radius:11px;padding:10px 12px}
 .hp-lbl{font-size:9px;color:var(–t3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
 .hp-val{font-size:15px;font-weight:700;font-family:‘DM Mono’,monospace}
-.hp-val.j{color:var(–accent)}
-.hp-val.p{color:var(–green)}
-
-/* PROGRESS */
+.hp-j{color:var(–accent)}.hp-p{color:var(–green)}
 .prog{margin-top:12px}
 .prog-row{display:flex;justify-content:space-between;font-size:10px;color:var(–t3);margin-bottom:3px;margin-top:5px}
 .prog-track{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
 .prog-fill{height:100%;border-radius:3px;transition:width .5s ease}
-.ok{background:var(–green)}.warn{background:var(–gold)}.over{background:var(–red)}
 
 /* STAT GRID */
 .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:8px 14px 0}
@@ -97,9 +92,8 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 /* CHIPS */
 .chips{display:flex;gap:4px;flex-wrap:wrap;padding:0 14px 8px}
 .chip{padding:4px 11px;border-radius:18px;border:1px solid var(–b2);background:none;font-size:11px;font-weight:700;color:var(–t3);cursor:pointer;font-family:‘DM Sans’,sans-serif;transition:all .15s;white-space:nowrap}
-.chip.active{background:var(–card2);color:var(–t1);border-color:var(–b3)}
-.chip:hover:not(.active){border-color:var(–gold);color:var(–gold)}
-.chip.sm{font-size:10px;padding:3px 9px}
+.chip.on{background:var(–card2);color:var(–t1);border-color:var(–b3)}
+.chip:hover:not(.on){border-color:var(–gold);color:var(–gold)}
 
 /* DEAL CARDS */
 .dl{padding:0 14px;display:flex;flex-direction:column;gap:6px}
@@ -122,17 +116,12 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 .dc-date{font-size:10px;color:var(–t3);margin-left:auto}
 .sch-card{background:var(–card);border:1px solid var(–b1);border-radius:var(–rl);padding:10px 13px;display:flex;align-items:center;gap:9px;cursor:pointer}
 .sch-dot{width:7px;height:7px;border-radius:50%;background:var(–purple);flex-shrink:0}
-
-/* EMPTY */
 .empty{text-align:center;padding:44px 24px}
-.empty-ico{font-size:36px;margin-bottom:8px}
 
-/* PLAN CARDS */
+/* PLAN */
 .plan-card{background:var(–card2);border-radius:var(–rl);padding:14px 15px;margin-bottom:7px}
 .plan-big{font-size:28px;font-weight:800;font-family:‘DM Mono’,monospace;letter-spacing:-1px;line-height:1}
 .plan-sub{font-size:11px;color:var(–t2);margin-top:3px}
-
-/* SCE GRID */
 .sgrid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .sce-c{background:var(–card);border:1px solid var(–b1);border-radius:var(–rl);padding:11px 13px}
 .sce-nm{font-size:10px;color:var(–t3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;line-height:1.3}
@@ -147,7 +136,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 .sett-b{padding:13px 15px;display:flex;flex-direction:column;gap:7px}
 .btn-s{width:100%;padding:12px;border-radius:var(–r);background:var(–card2);color:var(–t2);border:1px solid var(–b2);font-size:13px;font-weight:600;cursor:pointer;font-family:‘DM Sans’,sans-serif;text-align:center;transition:all .15s}
 .btn-s:hover{border-color:var(–b3);color:var(–t1)}
-.imp-status{font-size:12px;color:var(–t2);line-height:1.7;display:none;margin-top:5px;padding:9px 11px;background:var(–card2);border-radius:var(–r)}
+.imp-st{font-size:12px;color:var(–t2);line-height:1.7;display:none;margin-top:5px;padding:9px 11px;background:var(–card2);border-radius:var(–r)}
 
 /* MODAL */
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:none;align-items:flex-end;backdrop-filter:blur(4px)}
@@ -184,7 +173,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 .btn-d{flex:1;padding:12px;border-radius:var(–r);border:1px solid var(–b1);background:var(–red-bg);color:var(–red);font-size:14px;font-weight:700;cursor:pointer;font-family:‘DM Sans’,sans-serif}
 .btn-g{flex:1;padding:12px;border-radius:var(–r);border:1px solid var(–b1);background:var(–card2);color:var(–t2);font-size:14px;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
 
-/* TOAST */
+/* TOAST / DB chip */
 #toast{position:fixed;bottom:calc(96px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(–card3);color:var(–t1);border:1px solid var(–b2);padding:8px 16px;border-radius:18px;font-size:13px;font-weight:600;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,.5)}
 #toast.show{opacity:1}
 #dbc{position:fixed;bottom:calc(8px + env(safe-area-inset-bottom,0px));left:12px;background:var(–card2);border:1px solid var(–b1);border-radius:14px;padding:4px 9px;font-size:10px;color:var(–t3);display:flex;align-items:center;gap:4px;z-index:80;opacity:1;transition:opacity .3s;pointer-events:none}
@@ -200,7 +189,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 
 <header id="hdr">
   <div class="logo"><div class="logo-ico">💰</div>Investice</div>
-  <div class="q-pill"><span class="q-dot"></span><span id="qpill">Q?/????</span></div>
+  <div class="q-pill"><span class="q-dot"></span><span id="qpill">Načítám…</span></div>
 </header>
 
 <div id="content">
@@ -209,13 +198,20 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 
   <div class="view active" id="view-prehled">
     <div class="qnav" id="qnav"></div>
-    <div class="hero" id="hero"></div>
+    <div class="hero" id="hero">
+      <div class="hero-lbl">Načítám…</div>
+      <div class="hero-val" style="color:var(--gold)">—</div>
+    </div>
     <div class="sgrid" id="sgrid"></div>
     <div class="sec"><span class="sec-lbl">Záznamy</span><span id="pcnt" style="font-size:11px;color:var(--t3)"></span></div>
     <div class="chips" id="chips-p"></div>
     <div class="dl" id="dl"></div>
-    <div id="dl-empty" class="empty" style="display:none"><div class="empty-ico">📭</div><div style="font-size:14px;font-weight:700">Žádné záznamy</div><div style="font-size:12px;color:var(--t2);margin-top:4px">Přidej první kliknutím níže.</div></div>
-    <div class="vbar">Investiční Tracker v2.0</div>
+    <div id="dl-empty" class="empty" style="display:none">
+      <div style="font-size:36px;margin-bottom:8px">📭</div>
+      <div style="font-size:14px;font-weight:700">Žádné záznamy</div>
+      <div style="font-size:12px;color:var(--t2);margin-top:4px">Přidej první kliknutím na ＋ Přidat.</div>
+    </div>
+    <div class="vbar">Investiční Tracker v2.1</div>
   </div>
 
   <!-- PLÁN -->
@@ -223,33 +219,38 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
   <div class="view" id="view-plan">
     <div class="qnav" id="qnav2"></div>
     <div style="padding:10px 14px 0">
+      <!-- Plan inputs -->
       <div style="background:var(--card);border:1px solid var(--b2);border-radius:var(--rxl);overflow:hidden;margin-bottom:9px">
         <div style="padding:13px 15px;border-bottom:1px solid var(--b1)">
           <div style="font-size:13px;font-weight:700">🎯 Kvartální plán</div>
-          <div style="font-size:11px;color:var(--t2);line-height:1.5;margin-top:2px">Plán se ukládá per kvartál a zůstane zachován.</div>
+          <div style="font-size:11px;color:var(--t2);margin-top:2px">Ukládá se per kvartál.</div>
         </div>
         <div style="padding:13px 15px">
-          <div class="fr" style="padding:0;gap:9px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
             <div><label class="fl">Plán jednorázové (Kč)</label><input class="fi" type="number" id="plan-j" placeholder="10 000 000" oninput="savePlansD()"></div>
             <div><label class="fl">Plán pravidelné (Kč)</label><input class="fi" type="number" id="plan-p" placeholder="2 000 000" oninput="savePlansD()"></div>
           </div>
         </div>
       </div>
-      <div class="chips" id="chips-plan" style="padding:0 0 8px"></div>
+      <!-- Banker filter for plan -->
+      <div id="chips-plan-wrap" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"></div>
+      <!-- Progress -->
       <div id="plan-prog"></div>
+      <!-- Scenar breakdown + pie -->
       <div style="background:var(--card);border:1px solid var(--b2);border-radius:var(--rxl);overflow:hidden;margin-bottom:9px">
         <div style="padding:13px 15px;border-bottom:1px solid var(--b1);font-size:13px;font-weight:700">🥧 Rozpad podle scénáře</div>
         <div style="padding:11px 13px" id="sce-inner"></div>
         <div style="padding:0 13px 14px;display:flex;justify-content:center">
-          <canvas id="pie-chart" width="220" height="220"></canvas>
+          <canvas id="pie-chart" width="220" height="220" style="width:220px;height:220px"></canvas>
         </div>
       </div>
+      <!-- Schůzky -->
       <div style="background:var(--card);border:1px solid var(--b2);border-radius:var(--rxl);overflow:hidden;margin-bottom:9px">
         <div style="padding:13px 15px;border-bottom:1px solid var(--b1);font-size:13px;font-weight:700">📅 Schůzky bez obchodu</div>
-        <div id="sch-list" style="padding:12px 14px;font-size:13px;color:var(--t2)">—</div>
+        <div id="sch-list" style="padding:12px 14px;font-size:12px;color:var(--t2)">—</div>
       </div>
     </div>
-    <div class="vbar">Investiční Tracker v2.0</div>
+    <div class="vbar">Investiční Tracker v2.1</div>
   </div>
 
   <!-- NASTAVENÍ -->
@@ -259,19 +260,19 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
       <div class="sett-card">
         <div class="sett-h"><div class="sett-t">Export dat</div><div class="sett-d">Selektivní export podle bankéřů. Excel obsahuje souhrn, detail, scénáře a bankéře.</div></div>
         <div class="sett-b">
-          <div style="font-size:11px;color:var(--t3);font-weight:700">Filtr bankéřů pro export:</div>
-          <div class="chips" id="chips-exp" style="padding:0;flex-wrap:wrap;gap:4px"></div>
+          <div style="font-size:11px;color:var(--t3);font-weight:700;margin-bottom:2px">Filtr bankéřů pro export:</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap" id="chips-exp"></div>
           <button class="btn-s" onclick="exportExcel()">📊 Exportovat do Excelu (plný)</button>
           <button class="btn-s" style="border-color:rgba(255,207,92,.4);color:var(--gold)" onclick="openPrintModal()">🖨️ Přehledový report (PDF / tisk)</button>
         </div>
       </div>
       <div class="sett-card">
-        <div class="sett-h"><div class="sett-t">Import & záloha</div><div class="sett-d">Import z Excelu nebo JSON zálohy. Duplikáty se přeskočí.</div></div>
+        <div class="sett-h"><div class="sett-t">Import & záloha</div><div class="sett-d">Import z Excelu nebo JSON zálohy. Duplikáty se přeskočí automaticky.</div></div>
         <div class="sett-b">
           <input type="file" id="imp-file" accept=".xlsx,.json" style="display:none">
           <button class="btn-s" onclick="document.getElementById('imp-file').click()">📥 Importovat (.xlsx / .json)</button>
           <button class="btn-s" onclick="exportJSON()">💾 Záloha JSON</button>
-          <div class="imp-status" id="imp-st"></div>
+          <div class="imp-st" id="imp-st"></div>
         </div>
       </div>
       <div class="sett-card">
@@ -279,10 +280,10 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
         <div class="sett-b"><div id="sett-info" style="font-size:12px;color:var(--t2);line-height:1.9"></div></div>
       </div>
     </div>
-    <div class="vbar">Investiční Tracker v2.0 · Data lokálně 🔒</div>
+    <div class="vbar">Investiční Tracker v2.1 · Data lokálně 🔒</div>
   </div>
 
-</div><!-- /content -->
+</div>
 
 <nav id="bnav">
   <button class="bt active" data-v="prehled"><span class="bi">📋</span>Přehled</button>
@@ -293,52 +294,101 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 
 <button id="fab" onclick="openAdd()"><span style="font-size:19px;font-weight:300">＋</span>Přidat</button>
 
-<!-- MODAL ADD/EDIT -->
+<!-- MODAL: PŘIDAT / UPRAVIT -->
 
 <div class="mbg" id="m-add">
 <div class="ms">
   <div class="mh"></div>
   <div class="mt" id="m-title">Nový záznam</div>
-  <label class="ftog"><input type="checkbox" id="f-sch" onchange="togSch()"><span class="ftog-l">📅 Pouze schůzka (bez obchodu)</span></label>
+
+  <label class="ftog">
+    <input type="checkbox" id="f-sch" onchange="togSch()">
+    <span class="ftog-l">📅 Pouze schůzka (bez obchodu)</span>
+  </label>
+
   <div class="fs"><label class="fl">Jméno klienta</label><input class="fi" id="f-kl" type="text" placeholder="Jan Novák"></div>
+
   <div class="fr">
     <div><label class="fl">Datum schůzky *</label><input class="fi" id="f-dt" type="date"></div>
-    <div id="f-sp-w"><label class="fl">Spolupráce</label><select class="fi" id="f-sp" onchange="onSp()"><option>Sám</option><option>S bankéřem</option></select></div>
+    <div id="f-sp-w"><label class="fl">Spolupráce</label>
+      <select class="fi" id="f-sp" onchange="onSp()">
+        <option>Sám</option><option>S bankéřem</option>
+      </select>
+    </div>
   </div>
+
+  <!-- Bankéř u obchodu -->
+
   <div class="fs" id="f-bn-r" style="display:none"><label class="fl">Jméno bankéře</label><input class="fi" id="f-bn" type="text" placeholder="Petr Svoboda"></div>
   <!-- Bankéř u čisté schůzky -->
-  <div class="fs" id="f-bn-sch-r" style="display:none"><label class="fl">Jméno bankéře (schůzka)</label><input class="fi" id="f-bn-sch" type="text" placeholder="Petr Svoboda"></div>
+  <div class="fs" id="f-bn-sch-r" style="display:none"><label class="fl">Bankéř (schůzka)</label><input class="fi" id="f-bn-sch" type="text" placeholder="Petr Svoboda"></div>
+
+  <!-- Obchodní pole -->
+
   <div id="ob-fields">
     <div class="fr">
       <div><label class="fl">Datum realizace</label><input class="fi" id="f-real" type="date" oninput="autoDate()"></div>
-      <div><label class="fl">Typ fondu</label><select class="fi" id="f-fond" onchange="autoDate()"><option>Český (+3 dny)</option><option>Zahraniční (+5 dní)</option></select></div>
-    </div>
-    <div class="fs"><label class="fl">Datum připsání (auto)</label><input class="fi" id="f-prip" readonly placeholder="—"><div class="fiq" id="f-qw">⚠️ Připsání v jiném kvartálu</div></div>
-    <div class="fs"><label class="fl">Typ investice</label></div>
-    <div class="tgrid">
-      <button class="tb active" data-typ="Jednorázová">Jednorázová</button>
-      <button class="tb" data-typ="Pravidelná">Pravidelná</button>
-      <button class="tb" data-typ="Obojí">Obojí</button>
-    </div>
-    <div class="fs" id="cj-w"><label class="fl" id="cj-lbl">Částka (Kč)</label><input class="fi" id="f-c" type="number" inputmode="numeric" placeholder="300 000" oninput="updWarn()"><div class="fw" id="wj"></div></div>
-    <div class="fs" id="cp-w" style="display:none"><label class="fl">Pravidelná částka (Kč/měs.)</label><input class="fi" id="f-cp" type="number" inputmode="numeric" placeholder="5 000" oninput="updWarn()"><div class="fw" id="wp"></div></div>
-    <div id="cp-date-w" style="display:none">
-      <div class="fr">
-        <div><label class="fl">Realizace pravidelné</label><input class="fi" id="f-real-p" type="date" oninput="autoDateP()"></div>
-        <div><label class="fl">Fond pravidelné</label><select class="fi" id="f-fond-p" onchange="autoDateP()"><option>Český (+3 dny)</option><option>Zahraniční (+5 dní)</option></select></div>
+      <div><label class="fl">Typ fondu</label>
+        <select class="fi" id="f-fond" onchange="autoDate()">
+          <option>Český (+3 dny)</option><option>Zahraniční (+5 dní)</option>
+        </select>
       </div>
-      <div class="fs"><label class="fl">Připsání pravidelné (auto)</label><input class="fi" id="f-prip-p" readonly placeholder="—"><div class="fiq" id="f-qw-p">⚠️ Připsání v jiném kvartálu</div></div>
     </div>
-    <div class="fs"><label class="fl">Scénář</label></div>
-    <div class="sbgrid" id="sce-btns"></div>
+    <div class="fs">
+      <label class="fl">Datum připsání (auto)</label>
+      <input class="fi" id="f-prip" readonly placeholder="—">
+      <div class="fiq" id="f-qw">⚠️ Připsání v jiném kvartálu</div>
+    </div>
+
+```
+<div class="fs"><label class="fl">Typ investice</label></div>
+<div class="tgrid">
+  <button class="tb active" data-typ="Jednorázová">Jednorázová</button>
+  <button class="tb" data-typ="Pravidelná">Pravidelná</button>
+  <button class="tb" data-typ="Obojí">Obojí</button>
+</div>
+
+<div class="fs" id="cj-w">
+  <label class="fl" id="cj-lbl">Částka (Kč)</label>
+  <input class="fi" id="f-c" type="number" inputmode="numeric" placeholder="300 000" oninput="updWarn()">
+  <div class="fw" id="wj"></div>
+</div>
+
+<div class="fs" id="cp-w" style="display:none">
+  <label class="fl">Pravidelná částka (Kč/měs.)</label>
+  <input class="fi" id="f-cp" type="number" inputmode="numeric" placeholder="5 000" oninput="updWarn()">
+  <div class="fw" id="wp"></div>
+</div>
+
+<div id="cp-date-w" style="display:none">
+  <div class="fr">
+    <div><label class="fl">Realizace pravidelné</label><input class="fi" id="f-real-p" type="date" oninput="autoDateP()"></div>
+    <div><label class="fl">Fond pravidelné</label>
+      <select class="fi" id="f-fond-p" onchange="autoDateP()">
+        <option>Český (+3 dny)</option><option>Zahraniční (+5 dní)</option>
+      </select>
+    </div>
   </div>
+  <div class="fs">
+    <label class="fl">Připsání pravidelné (auto)</label>
+    <input class="fi" id="f-prip-p" readonly placeholder="—">
+    <div class="fiq" id="f-qw-p">⚠️ Připsání v jiném kvartálu</div>
+  </div>
+</div>
+
+<div class="fs"><label class="fl">Scénář</label></div>
+<div class="sbgrid" id="sce-btns"></div>
+```
+
+  </div>
+
   <div class="fs"><label class="fl">Poznámka</label><input class="fi" id="f-poz" type="text" placeholder="Volitelná..."></div>
   <button class="btn-p" id="btn-sv" onclick="saveZ()">✅ Přidat záznam</button>
   <div style="height:10px"></div>
 </div>
 </div>
 
-<!-- MODAL DETAIL -->
+<!-- MODAL: DETAIL -->
 
 <div class="mbg" id="m-det">
 <div class="ms">
@@ -354,20 +404,21 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 </div>
 </div>
 
-<!-- MODAL PRINT REPORT -->
+<!-- MODAL: PRINT REPORT -->
 
 <div class="mbg" id="m-print">
 <div class="ms">
   <div class="mh"></div>
   <div class="mt">🖨️ Přehledový report</div>
-  <div class="fs"><label class="fl">Bankéři (prázdné = všichni)</label>
-    <div class="chips" id="chips-print" style="padding:0;margin-top:4px;flex-wrap:wrap;gap:4px"></div>
+  <div class="fs">
+    <label class="fl">Bankéři (prázdné = všichni)</label>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px" id="chips-print"></div>
   </div>
   <div class="fr">
     <div><label class="fl">Datum od</label><input class="fi" id="pr-from" type="date"></div>
     <div><label class="fl">Datum do</label><input class="fi" id="pr-to" type="date"></div>
   </div>
-  <div style="padding:10px 17px 0;font-size:11px;color:var(--t3)" id="pr-count"></div>
+  <div style="padding:9px 17px 0;font-size:11px;color:var(--t3)" id="pr-count"></div>
   <button class="btn-p" onclick="doPrint()">🖨️ Otevřít report / Uložit PDF</button>
   <div style="height:10px"></div>
 </div>
@@ -378,92 +429,222 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 
 <script>
 'use strict';
-const SCENARE=['Nové peníze','Výměna + nové peníze','Výměna','Prodej','Prodej + výměna'];
-const DB_NAME='investice_v2',DB_VER=2;
-let db=null,zaznamy=[],editId=null,curV='prehled',selQ=null;
-let bfP=[],bfPl=[],bfEx=[],bfPrint=[];
-let curTyp='Jednorázová',curSce=SCENARE[0],onlySch=false,detId=null;
+// ═══════════════════════════════════════════════
+//  INVESTIČNÍ TRACKER v2.1
+//  DB: investice_v2 (zachovává existující data)
+// ═══════════════════════════════════════════════
 
-// DB
-function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VER);r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('zaznamy'))d.createObjectStore('zaznamy',{keyPath:'id'});if(!d.objectStoreNames.contains('plans'))d.createObjectStore('plans',{keyPath:'key'})};r.onsuccess=e=>res(e.target.result);r.onerror=e=>rej(e.target.error)})}
-const dga=s=>new Promise((r,j)=>{const q=db.transaction(s,'readonly').objectStore(s).getAll();q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)});
-const dpu=(s,d)=>new Promise((r,j)=>{const q=db.transaction(s,'readwrite').objectStore(s).put(d);q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)});
-const ddl=(s,id)=>new Promise((r,j)=>{const q=db.transaction(s,'readwrite').objectStore(s).delete(id);q.onsuccess=()=>r();q.onerror=()=>j(q.error)});
-const dge=(s,k)=>new Promise((r,j)=>{const q=db.transaction(s,'readonly').objectStore(s).get(k);q.onsuccess=()=>r(q.result||null);q.onerror=()=>j(q.error)});
+const SCENARE = ['Nové peníze','Výměna + nové peníze','Výměna','Prodej','Prodej + výměna'];
+// POZOR: DB_NAME a DB_VER musí zůstat stejné jako v předchozí verzi!
+const DB_NAME = 'investice_v2', DB_VER = 2;
 
-// Quarter
-function curQ(){const n=new Date();return{year:n.getFullYear(),q:Math.floor(n.getMonth()/3)+1}}
-function qStart(y,q){return new Date(y,(q-1)*3,1)}
-function qEnd(y,q){return new Date(y,(q-1)*3+3,0)}
-function qEq(a,b){return a&&b&&a.year===b.year&&a.q===b.q}
-function qKey(y,q){return`${y}-Q${q}`}
-function dateToQ(s){if(!s)return null;const d=new Date(s);return{year:d.getFullYear(),q:Math.floor(d.getMonth()/3)+1}}
-function zazQ(z){return dateToQ(z.datumPripsani||z.datumRealizace||z.datumSchuzky)}
-function qMeta(){
-  const{year,q}=selQ,cq=curQ(),start=qStart(year,q),end=qEnd(year,q),now=new Date();
-  const total=Math.floor((end-start)/86400000)+1;
-  const elapsed=qEq({year,q},cq)?Math.floor((now-start)/86400000)+1:total;
-  return{year,q,total,elapsed,ratio:elapsed/total,isCur:qEq({year,q},cq)};
+let db = null;
+let zaznamy = [];         // načteno z DB jednou, udržováno v paměti
+let planCache = {};       // {qKey: {j,p}} — cache plánů per kvartál
+let editId = null;
+let curV = 'prehled';
+let selQ = null;          // {year, q} — vybraný kvartál
+
+// filtry bankéřů per kontext
+let bfP = [], bfPl = [], bfEx = [], bfPrint = [];
+
+// stav formuláře
+let curTyp = 'Jednorázová', curSce = SCENARE[0], onlySch = false, detId = null;
+
+// vlastní seznam kvartálů (pro +Q)
+let customQs = null;
+
+// ── DB ───────────────────────────────────────
+function openDB() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      // Bezpečný upgrade — vytvoří store jen pokud neexistuje
+      if (!d.objectStoreNames.contains('zaznamy'))
+        d.createObjectStore('zaznamy', {keyPath: 'id'});
+      if (!d.objectStoreNames.contains('plans'))
+        d.createObjectStore('plans', {keyPath: 'key'});
+    };
+    req.onsuccess = e => res(e.target.result);
+    req.onerror = e => rej(e.target.error);
+    req.onblocked = () => rej(new Error('DB blocked'));
+  });
 }
 
-// Utils
-const fK=v=>(v&&!isNaN(v)&&Number(v)!==0)?new Intl.NumberFormat('cs-CZ',{style:'currency',currency:'CZK',maximumFractionDigits:0}).format(v):'—';
-const addD=(s,d)=>{if(!s)return'';const dt=new Date(s);dt.setDate(dt.getDate()+d);return dt.toISOString().split('T')[0]};
-const fDt=s=>s?new Date(s).toLocaleDateString('cs-CZ',{day:'numeric',month:'short'}):'—';
-const fDtF=s=>s?new Date(s).toLocaleDateString('cs-CZ',{day:'numeric',month:'long',year:'numeric'}):'—';
+const dga = s => new Promise((res, rej) => {
+  const tx = db.transaction(s, 'readonly');
+  const req = tx.objectStore(s).getAll();
+  req.onsuccess = () => res(req.result || []);
+  req.onerror = () => rej(req.error);
+});
+const dpu = (s, d) => new Promise((res, rej) => {
+  const tx = db.transaction(s, 'readwrite');
+  const req = tx.objectStore(s).put(d);
+  req.onsuccess = () => res(req.result);
+  req.onerror = () => rej(req.error);
+});
+const ddl = (s, id) => new Promise((res, rej) => {
+  const tx = db.transaction(s, 'readwrite');
+  const req = tx.objectStore(s).delete(id);
+  req.onsuccess = () => res();
+  req.onerror = () => rej(req.error);
+});
+const dge = (s, k) => new Promise((res, rej) => {
+  const tx = db.transaction(s, 'readonly');
+  const req = tx.objectStore(s).get(k);
+  req.onsuccess = () => res(req.result || null);
+  req.onerror = () => rej(req.error);
+});
+
+// ── QUARTER ──────────────────────────────────
+function curQ() {
+  const n = new Date();
+  return {year: n.getFullYear(), q: Math.floor(n.getMonth() / 3) + 1};
+}
+function qStart(y, q) { return new Date(y, (q-1)*3, 1); }
+function qEnd(y, q)   { return new Date(y, (q-1)*3+3, 0); }
+function qEq(a, b)    { return a && b && a.year === b.year && a.q === b.q; }
+function qKey(y, q)   { return `${y}-Q${q}`; }
+
+function dateToQ(s) {
+  if (!s) return null;
+  const d = new Date(s);
+  if (isNaN(d)) return null;
+  return {year: d.getFullYear(), q: Math.floor(d.getMonth() / 3) + 1};
+}
+
+// Kvartál záznamu: připsání → realizace → schůzka
+function zazQ(z) {
+  return dateToQ(z.datumPripsani || z.datumRealizace || z.datumSchuzky);
+}
+
+function qMeta() {
+  const {year, q} = selQ;
+  const cq = curQ();
+  const start = qStart(year, q), end = qEnd(year, q), now = new Date();
+  const total = Math.floor((end - start) / 86400000) + 1;
+  const elapsed = qEq({year, q}, cq)
+    ? Math.max(1, Math.floor((now - start) / 86400000) + 1)
+    : total;
+  return {year, q, start, end, total, elapsed, ratio: elapsed / total, isCur: qEq({year, q}, cq)};
+}
+
+// ── UTILS ────────────────────────────────────
+const fK = v => (v && !isNaN(v) && Number(v) !== 0)
+  ? new Intl.NumberFormat('cs-CZ', {style:'currency', currency:'CZK', maximumFractionDigits:0}).format(v)
+  : '—';
+const addD = (s, d) => {
+  if (!s) return '';
+  const dt = new Date(s);
+  dt.setDate(dt.getDate() + d);
+  return dt.toISOString().split('T')[0];
+};
+const fDt = s => s ? new Date(s).toLocaleDateString('cs-CZ', {day:'numeric', month:'short'}) : '—';
+const fDtF = s => s ? new Date(s).toLocaleDateString('cs-CZ', {day:'numeric', month:'long', year:'numeric'}) : '—';
 
 let _tt;
-function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>e.classList.remove('show'),2400)}
-function dbchip(ok,t){const e=document.getElementById('dbc');e.classList.toggle('err',!ok);e.classList.remove('hide');document.getElementById('dbt').textContent=t;setTimeout(()=>e.classList.add('hide'),2800)}
-function closeM(id){document.getElementById(id).classList.remove('open')}
+function toast(m) {
+  const e = document.getElementById('toast');
+  e.textContent = m; e.classList.add('show');
+  clearTimeout(_tt); _tt = setTimeout(() => e.classList.remove('show'), 2400);
+}
+function dbchip(ok, t) {
+  const e = document.getElementById('dbc');
+  e.classList.toggle('err', !ok); e.classList.remove('hide');
+  document.getElementById('dbt').textContent = t;
+  setTimeout(() => e.classList.add('hide'), 2800);
+}
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
 
-// Plans
+// ── PLANS (cached) ───────────────────────────
 let _pd;
-function savePlansD(){clearTimeout(_pd);_pd=setTimeout(savePlans,600)}
-async function savePlans(){
-  const j=Number(document.getElementById('plan-j')?.value)||0;
-  const p=Number(document.getElementById('plan-p')?.value)||0;
-  await dpu('plans',{key:qKey(selQ.year,selQ.q),j,p});
+function savePlansD() { clearTimeout(_pd); _pd = setTimeout(savePlans, 600); }
+
+async function savePlans() {
+  if (!selQ) return;
+  const k = qKey(selQ.year, selQ.q);
+  const j = Number(document.getElementById('plan-j')?.value) || 0;
+  const p = Number(document.getElementById('plan-p')?.value) || 0;
+  planCache[k] = {j, p};
+  await dpu('plans', {key: k, j, p});
   renderPlan();
 }
-async function loadPlans(){
-  const pl=await dge('plans',qKey(selQ.year,selQ.q));
-  const pj=document.getElementById('plan-j'),pp=document.getElementById('plan-p');
-  if(pj)pj.value=pl?.j||'';if(pp)pp.value=pl?.p||'';
+
+async function loadAllPlans() {
+  const rows = await dga('plans');
+  planCache = {};
+  rows.forEach(r => { planCache[r.key] = {j: r.j || 0, p: r.p || 0}; });
 }
 
-// Bankers
-function getBankers(){return[...new Set(zaznamy.filter(z=>z.banker).map(z=>z.banker))].sort()}
-function buildChips(cid,af,fn,sm=false){
-  const el=document.getElementById(cid);if(!el)return;
-  const bs=getBankers();
-  const s=sm?'class="chip sm"':'class="chip"';
-  el.innerHTML=[`<button ${s} style="${af.length?'':'background:var(--card2);color:var(--t1);border-color:var(--b3)'}" onclick="${fn}('__all__')">Všichni</button>`,
-    ...bs.map(b=>`<button ${s} style="${af.includes(b)?'background:var(--card2);color:var(--t1);border-color:var(--b3)':''}" onclick="${fn}('${b.replace(/'/g,"\\'")}')">👤 ${b}</button>`)
-  ].join('')
+function getPl() {
+  if (!selQ) return {j: 0, p: 0};
+  const k = qKey(selQ.year, selQ.q);
+  return planCache[k] || {j: 0, p: 0};
 }
-function togBP(n){if(n==='__all__')bfP=[];else{const i=bfP.indexOf(n);i>=0?bfP.splice(i,1):bfP.push(n)}renderPrehled()}
-function togBPl(n){if(n==='__all__')bfPl=[];else{const i=bfPl.indexOf(n);i>=0?bfPl.splice(i,1):bfPl.push(n)}renderPlan()}
-function togBEx(n){if(n==='__all__')bfEx=[];else{const i=bfEx.indexOf(n);i>=0?bfEx.splice(i,1):bfEx.push(n)}buildChips('chips-exp',bfEx,'togBEx',true)}
-function togBPrint(n){if(n==='__all__')bfPrint=[];else{const i=bfPrint.indexOf(n);i>=0?bfPrint.splice(i,1):bfPrint.push(n)}buildChips('chips-print',bfPrint,'togBPrint',true);updatePrCount()}
 
-function filtZ(bf){return zaznamy.filter(z=>{if(!qEq(zazQ(z),selQ))return false;return bf.length?bf.includes(z.banker):true})}
+function applyPlanToInputs() {
+  const {j, p} = getPl();
+  const pj = document.getElementById('plan-j');
+  const pp = document.getElementById('plan-p');
+  if (pj) pj.value = j || '';
+  if (pp) pp.value = p || '';
+}
 
-// Q Nav — custom list with +Q button
-let customQs = null; // null = use default; array of {year,q} when user added future quarters
+// ── BANKERS ──────────────────────────────────
+function getBankers() {
+  return [...new Set(zaznamy.filter(z => z.banker).map(z => z.banker))].sort();
+}
 
+function buildChips(containerId, activeList, fnName, small) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const bs = getBankers();
+  const cls = small ? 'chip' : 'chip';
+  const sz = small ? 'font-size:10px;padding:3px 9px' : '';
+  el.innerHTML = [
+    `<button class="${cls} ${!activeList.length ? 'on' : ''}" style="${sz}" onclick="${fnName}('__all__')">Všichni</button>`,
+    ...bs.map(b => `<button class="${cls} ${activeList.includes(b) ? 'on' : ''}" style="${sz}" onclick="${fnName}('${b.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">👤 ${b}</button>`)
+  ].join('');
+}
+
+function togBP(n)     { tog(bfP, n);    renderPrehled(); }
+function togBPl(n)    { tog(bfPl, n);   renderPlan(); }
+function togBEx(n)    { tog(bfEx, n);   buildChips('chips-exp', bfEx, 'togBEx', true); }
+function togBPrint(n) { tog(bfPrint,n); buildChips('chips-print', bfPrint, 'togBPrint', true); updPrCount(); }
+
+function tog(arr, n) {
+  if (n === '__all__') { arr.length = 0; return; }
+  const i = arr.indexOf(n);
+  i >= 0 ? arr.splice(i, 1) : arr.push(n);
+}
+
+function filtZ(bf) {
+  return zaznamy.filter(z => {
+    const zq = zazQ(z);
+    if (!zq || !qEq(zq, selQ)) return false;
+    return bf.length ? bf.includes(z.banker) : true;
+  });
+}
+
+// ── Q NAV ────────────────────────────────────
 function getQList() {
   if (customQs) return customQs;
-  const cq = curQ(); const qs = []; let {year, q} = cq;
-  for (let i = 0; i < 6; i++) { qs.push({year, q}); q--; if (q < 1) { q = 4; year--; } }
+  const cq = curQ();
+  const qs = [];
+  let {year, q} = cq;
+  for (let i = 0; i < 6; i++) {
+    qs.push({year, q});
+    q--; if (q < 1) { q = 4; year--; }
+  }
   return qs.reverse();
 }
 
 function addNextQ() {
-  const list = getQList();
-  if (!customQs) customQs = [...list];
+  if (!customQs) customQs = [...getQList()];
   const last = customQs[customQs.length - 1];
-  let {year, q} = last; q++; if (q > 4) { q = 1; year++; }
+  let {year, q} = last;
+  q++; if (q > 4) { q = 1; year++; }
   customQs.push({year, q});
   buildQNav('qnav'); buildQNav('qnav2');
 }
@@ -472,625 +653,748 @@ function buildQNav(cid) {
   const el = document.getElementById(cid); if (!el) return;
   const list = getQList();
   el.innerHTML = list.map(({year: y, q: qn}) =>
-    `<button class="qb ${qEq({year:y,q:qn},selQ)?'active':''}" onclick="selQF(${y},${qn})">Q${qn}/${y}</button>`
-  ).join('') + `<button class="qb qb-add" onclick="addNextQ()" title="Přidat příští kvartál">＋Q</button>`;
-}
-function selQF(year,q){
-  selQ={year,q};
-  buildQNav('qnav');buildQNav('qnav2');
-  const{elapsed,total,isCur}=qMeta();
-  document.getElementById('qpill').textContent=`Q${q}/${year} · ${isCur?`den ${elapsed}/${total}`:'hotovo'}`;
-  loadPlans().then(()=>renderAll());
+    `<button class="qb ${qEq({year:y,q:qn}, selQ) ? 'active' : ''}" onclick="selQF(${y},${qn})">Q${qn}/${y}</button>`
+  ).join('') + `<button class="qb qb-add" onclick="addNextQ()">＋Q</button>`;
 }
 
-// Init
-async function init(){
-  selQ=curQ();
-  try{
-    db=await openDB();dbchip(true,'DB OK');
-    zaznamy=await dga('zaznamy');
-    await loadPlans();
-    const{q,year,elapsed,total,isCur}=qMeta();
-    document.getElementById('qpill').textContent=`Q${q}/${year} · ${isCur?`den ${elapsed}/${total}`:'hotovo'}`;
-    buildQNav('qnav');buildQNav('qnav2');
-    initSce();renderAll();
-  }catch(e){dbchip(false,'Chyba DB');console.error(e)}
+function selQF(year, q) {
+  selQ = {year, q};
+  buildQNav('qnav'); buildQNav('qnav2');
+  const {elapsed, total, isCur} = qMeta();
+  document.getElementById('qpill').textContent =
+    `Q${q}/${year} · ${isCur ? `den ${elapsed}/${total}` : 'hotovo'}`;
+  applyPlanToInputs();
+  renderAll();
 }
 
-function renderAll(){
-  buildChips('chips-p',bfP,'togBP');
-  buildChips('chips-plan',bfPl,'togBPl',true);
-  buildChips('chips-exp',bfEx,'togBEx',true);
-  buildChips('chips-print',bfPrint,'togBPrint',true);
+// ── INIT ─────────────────────────────────────
+async function init() {
+  selQ = curQ();
+  try {
+    db = await openDB();
+    // Načti vše najednou — žádné race conditions
+    const [allZ, _plans] = await Promise.all([dga('zaznamy'), loadAllPlans()]);
+    zaznamy = allZ;
+    dbchip(true, `DB OK · ${zaznamy.length}`);
+
+    const {q, year, elapsed, total, isCur} = qMeta();
+    document.getElementById('qpill').textContent =
+      `Q${q}/${year} · ${isCur ? `den ${elapsed}/${total}` : 'hotovo'}`;
+
+    buildQNav('qnav'); buildQNav('qnav2');
+    applyPlanToInputs();
+    initSce();
+    renderAll();
+  } catch(e) {
+    dbchip(false, 'Chyba DB');
+    console.error('DB error:', e);
+    // Ukáže aspoň prázdný stav místo zamrznutí
+    document.getElementById('qpill').textContent = 'Chyba DB';
+    document.getElementById('hero').innerHTML =
+      `<div class="hero-lbl" style="color:var(--red)">Chyba databáze</div>
+       <div style="font-size:12px;color:var(--t2);margin-top:6px">Zkus obnovit stránku (pull-to-refresh).<br>Chyba: ${e.message}</div>`;
+  }
+}
+
+// ── RENDER ALL ───────────────────────────────
+function renderAll() {
+  buildChips('chips-p', bfP, 'togBP', false);
+  buildChips('chips-plan-wrap', bfPl, 'togBPl', true);
+  buildChips('chips-exp', bfEx, 'togBEx', true);
+  buildChips('chips-print', bfPrint, 'togBPrint', true);
   renderPrehled();
-  if(curV==='plan')renderPlan();
-  if(curV==='sett')renderSett();
+  if (curV === 'plan') renderPlan();
+  if (curV === 'sett') renderSett();
 }
 
-// Nav
-function navTo(v){
-  curV=v;
-  document.querySelectorAll('.view').forEach(e=>e.classList.toggle('active',e.id==='view-'+v));
-  document.querySelectorAll('.bt').forEach(b=>b.classList.toggle('active',b.dataset.v===v));
-  document.getElementById('fab').classList.toggle('hidden',v==='sett');
-  if(v==='plan'){buildQNav('qnav2');renderPlan()}
-  if(v==='sett')renderSett();
-  if(v==='prehled')renderPrehled();
+// ── NAV ──────────────────────────────────────
+function navTo(v) {
+  curV = v;
+  document.querySelectorAll('.view').forEach(e => e.classList.toggle('active', e.id === 'view-' + v));
+  document.querySelectorAll('.bt').forEach(b => b.classList.toggle('active', b.dataset.v === v));
+  document.getElementById('fab').classList.toggle('hidden', v === 'sett');
+  if (v === 'plan')  { buildQNav('qnav2'); applyPlanToInputs(); renderPlan(); }
+  if (v === 'sett')  renderSett();
+  if (v === 'prehled') renderPrehled();
 }
-document.querySelectorAll('.bt').forEach(b=>b.addEventListener('click',()=>navTo(b.dataset.v)));
+document.querySelectorAll('.bt').forEach(b => b.addEventListener('click', () => navTo(b.dataset.v)));
 
-// Render Přehled
-function renderPrehled(){
-  buildChips('chips-p',bfP,'togBP');
-  const data=filtZ(bfP);
-  const ob=data.filter(z=>!z.jenSch);
-  const{q,year,elapsed,total,ratio}=qMeta();
-  const j=ob.reduce((s,z)=>s+(z.pocJ||0),0);
-  const p=ob.reduce((s,z)=>s+(z.pocP||0),0);
-  const pl=getPl();
-  const pj=pl.j,pp=pl.p;
-  const aj=Math.round(ratio*pj),ap=Math.round(ratio*pp);
-  const pctJ=aj?Math.min(100,Math.round(j/aj*100)):null;
-  const pctP=ap?Math.min(100,Math.round(p/ap*100)):null;
-  const bc=x=>x===null?'ok':x>=100?'over':x>=70?'warn':'ok';
+// ── RENDER PŘEHLED ───────────────────────────
+function renderPrehled() {
+  buildChips('chips-p', bfP, 'togBP', false);
+  const data = filtZ(bfP);
+  const ob = data.filter(z => !z.jenSch);
+  const {q, year, elapsed, total, ratio} = qMeta();
+  const j = ob.reduce((s, z) => s + (z.pocJ || 0), 0);
+  const p = ob.reduce((s, z) => s + (z.pocP || 0), 0);
+  const {j: pj, p: pp} = getPl();
+  const aj = Math.round(ratio * pj), ap = Math.round(ratio * pp);
+  const pctJ = aj ? Math.min(100, Math.round(j / aj * 100)) : null;
+  const pctP = ap ? Math.min(100, Math.round(p / ap * 100)) : null;
+  const bc = x => x === null ? 'var(--t3)' : x >= 100 ? 'var(--green)' : x >= 70 ? 'var(--gold)' : 'var(--red)';
+  const bfill = x => x === null ? '' : x >= 100 ? 'background:var(--green)' : x >= 70 ? 'background:var(--gold)' : 'background:var(--red)';
 
-  document.getElementById('hero').innerHTML=`
+  document.getElementById('hero').innerHTML = `
     <div class="hero-lbl">Q${q}/${year} · den ${elapsed}/${total}</div>
-    <div class="hero-val" style="color:var(--gold)">${fK(j+p)}</div>
-    <div class="hero-sub">${ob.length} obchodů · ${data.filter(z=>z.jenSch).length} schůzek${bfP.length?' · Filtr: '+bfP.join(', '):''}</div>
+    <div class="hero-val" style="color:var(--gold)">${fK(j + p)}</div>
+    <div class="hero-sub">${ob.length} obchodů · ${data.filter(z => z.jenSch).length} schůzek${bfP.length ? ' · Filtr: ' + bfP.join(', ') : ''}</div>
     <div class="hero-pills">
-      <div class="hp"><div class="hp-lbl">Jednorázové</div><div class="hp-val j">${fK(j)}</div></div>
-      <div class="hp"><div class="hp-lbl">Pravidelné</div><div class="hp-val p">${fK(p)}</div></div>
+      <div class="hp"><div class="hp-lbl">Jednorázové</div><div class="hp-val hp-j">${fK(j)}</div></div>
+      <div class="hp"><div class="hp-lbl">Pravidelné</div><div class="hp-val hp-p">${fK(p)}</div></div>
     </div>
-    ${pj||pp?`<div class="prog">
-      ${pj?`<div class="prog-row"><span>J: ${pctJ??0}% alikvóty</span><span>${fK(j)} / ${fK(aj)}</span></div><div class="prog-track"><div class="prog-fill ${bc(pctJ)}" style="width:${Math.min(100,pctJ??0)}%"></div></div>`:''}
-      ${pp?`<div class="prog-row"><span>P: ${pctP??0}% alikvóty</span><span>${fK(p)} / ${fK(ap)}</span></div><div class="prog-track"><div class="prog-fill ${bc(pctP)}" style="width:${Math.min(100,pctP??0)}%"></div></div>`:''}
-    </div>`:''}`;
+    ${(pj || pp) ? `<div class="prog">
+      ${pj ? `<div class="prog-row"><span>J: ${pctJ ?? 0}% alikvóty</span><span>${fK(j)} / ${fK(aj)}</span></div>
+      <div class="prog-track"><div class="prog-fill" style="width:${Math.min(100, pctJ ?? 0)}%;${bfill(pctJ)}"></div></div>` : ''}
+      ${pp ? `<div class="prog-row"><span>P: ${pctP ?? 0}% alikvóty</span><span>${fK(p)} / ${fK(ap)}</span></div>
+      <div class="prog-track"><div class="prog-fill" style="width:${Math.min(100, pctP ?? 0)}%;${bfill(pctP)}"></div></div>` : ''}
+    </div>` : ''}`;
 
-  document.getElementById('sgrid').innerHTML=`
+  document.getElementById('sgrid').innerHTML = `
     <div class="sc"><div class="sc-lbl">📦 Obchodů</div><div class="sc-val" style="color:var(--accent)">${ob.length}</div></div>
-    <div class="sc"><div class="sc-lbl">📅 Schůzek</div><div class="sc-val" style="color:var(--purple)">${data.filter(z=>z.jenSch).length}</div></div>`;
+    <div class="sc"><div class="sc-lbl">📅 Schůzek</div><div class="sc-val" style="color:var(--purple)">${data.filter(z => z.jenSch).length}</div></div>`;
 
-  document.getElementById('pcnt').textContent=`${data.length} záznamů`;
-  const dlEl=document.getElementById('dl'),emEl=document.getElementById('dl-empty');
-  if(!data.length){dlEl.innerHTML='';emEl.style.display='';return}
-  emEl.style.display='none';
-  const sorted=[...data].sort((a,b)=>(b.datumSchuzky||'').localeCompare(a.datumSchuzky||''));
-  dlEl.innerHTML=sorted.map(z=>{
-    if(z.jenSch)return`<div class="sch-card" onclick="openDet(${z.id})"><div class="sch-dot"></div><div style="flex:1"><div style="font-size:13px;font-weight:600">${z.klient||'—'}</div><div style="font-size:11px;color:var(--t3)">${fDt(z.datumSchuzky)}${z.banker?' · 👥 '+z.banker:''}${z.poznamka?' · '+z.poznamka:''}</div></div><span class="badge bs">📅</span></div>`;
-    const fq=!qEq(zazQ(z),selQ);
-    const tc=z.typ==='Jednorázová'?'bj':z.typ==='Pravidelná'?'bp':'bo';
-    return`<div class="dc${fq?' fq':''}" onclick="openDet(${z.id})">
+  document.getElementById('pcnt').textContent = `${data.length} záznamů`;
+  const dlEl = document.getElementById('dl'), emEl = document.getElementById('dl-empty');
+
+  if (!data.length) { dlEl.innerHTML = ''; emEl.style.display = ''; return; }
+  emEl.style.display = 'none';
+
+  const sorted = [...data].sort((a, b) => (b.datumSchuzky || '').localeCompare(a.datumSchuzky || ''));
+  dlEl.innerHTML = sorted.map(z => {
+    if (z.jenSch) {
+      return `<div class="sch-card" onclick="openDet(${z.id})">
+        <div class="sch-dot"></div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">${z.klient || '—'}</div>
+          <div style="font-size:11px;color:var(--t3)">${fDt(z.datumSchuzky)}${z.banker ? ' · 👥 ' + z.banker : ''}${z.poznamka ? ' · ' + z.poznamka : ''}</div>
+        </div>
+        <span class="badge bs">📅</span>
+      </div>`;
+    }
+    const fq = !qEq(zazQ(z), selQ);
+    const tc = z.typ === 'Jednorázová' ? 'bj' : z.typ === 'Pravidelná' ? 'bp' : 'bo';
+    return `<div class="dc${fq ? ' fq' : ''}" onclick="openDet(${z.id})">
       <div class="dc-top">
-        <div><div class="dc-name">${z.klient||'—'}</div>${z.banker?`<div class="dc-banker">👥 ${z.banker}</div>`:''}</div>
-        <div class="dc-right"><div class="dc-amt${z.spoluprace==='Sám'?' own':''}">${fK(z.pocJ+z.pocP)}</div><div style="font-size:10px;color:var(--t3)">${z.spoluprace==='S bankéřem'?'50% sdíleno':'vlastní'}</div></div>
+        <div>
+          <div class="dc-name">${z.klient || '—'}</div>
+          ${z.banker ? `<div class="dc-banker">👥 ${z.banker}</div>` : ''}
+        </div>
+        <div class="dc-right">
+          <div class="dc-amt${z.spoluprace === 'Sám' ? ' own' : ''}">${fK((z.pocJ || 0) + (z.pocP || 0))}</div>
+          <div style="font-size:10px;color:var(--t3)">${z.spoluprace === 'S bankéřem' ? '50% sdíleno' : 'vlastní'}</div>
+        </div>
       </div>
-      <div class="dc-meta"><span class="badge ${tc}">${z.typ}</span><span class="badge bsc">${z.scenar}</span><span class="dc-date">${fDt(z.datumSchuzky)}</span></div>
+      <div class="dc-meta">
+        <span class="badge ${tc}">${z.typ}</span>
+        <span class="badge bsc">${z.scenar}</span>
+        <span class="dc-date">${fDt(z.datumSchuzky)}</span>
+      </div>
     </div>`;
   }).join('');
 }
 
-function getPl(){return{j:Number(document.getElementById('plan-j')?.value)||0,p:Number(document.getElementById('plan-p')?.value)||0}}
+// ── RENDER PLÁN ──────────────────────────────
+function renderPlan() {
+  buildChips('chips-plan-wrap', bfPl, 'togBPl', true);
+  applyPlanToInputs();
+  const {q, year, elapsed, total, ratio} = qMeta();
+  const data = filtZ(bfPl).filter(z => !z.jenSch);
+  const j = data.reduce((s, z) => s + (z.pocJ || 0), 0);
+  const p = data.reduce((s, z) => s + (z.pocP || 0), 0);
+  const {j: pj, p: pp} = getPl();
+  const aj = Math.round(ratio * pj), ap = Math.round(ratio * pp);
+  const pctJ = aj ? Math.min(100, Math.round(j / aj * 100)) : null;
+  const pctP = ap ? Math.min(100, Math.round(p / ap * 100)) : null;
+  const bc = x => x === null ? '#4d6080' : x >= 100 ? 'var(--green)' : x >= 70 ? 'var(--gold)' : 'var(--red)';
 
-// Render Plan
-function renderPlan(){
-  buildChips('chips-plan',bfPl,'togBPl',true);
-  const{q,year,elapsed,total,ratio}=qMeta();
-  const data=filtZ(bfPl).filter(z=>!z.jenSch);
-  const j=data.reduce((s,z)=>s+(z.pocJ||0),0);
-  const p=data.reduce((s,z)=>s+(z.pocP||0),0);
-  const{j:pj,p:pp}=getPl();
-  const aj=Math.round(ratio*pj),ap=Math.round(ratio*pp);
-  const pctJ=aj?Math.min(100,Math.round(j/aj*100)):null;
-  const pctP=ap?Math.min(100,Math.round(p/ap*100)):null;
-  const bc=x=>x===null?'#4d6080':x>=100?'var(--green)':x>=70?'var(--gold)':'var(--red)';
+  const card = (lbl, val, aliq, plan, pct) => `
+    <div class="plan-card">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:5px">${lbl}</div>
+      <div class="plan-big">${fK(val)}</div>
+      <div class="plan-sub">splněno</div>
+      ${plan ? `
+      <div style="margin-top:9px;display:flex;justify-content:space-between;font-size:10px;color:var(--t3)">
+        <span>Alikvótní cíl · den ${elapsed}/${total}</span><span>${fK(aliq)}</span>
+      </div>
+      <div class="prog-track" style="margin-top:4px">
+        <div class="prog-fill" style="width:${Math.min(100, pct ?? 0)}%;background:${bc(pct)}"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px">
+        <span style="color:${bc(pct)};font-weight:700">${pct ?? 0}% alikvóty</span>
+        <span style="color:var(--t3)">Zbývá: ${fK(Math.max(0, plan - val))}</span>
+      </div>` : ''}
+    </div>`;
 
-  const card=(lbl,val,aliq,plan,pct)=>`<div class="plan-card">
-    <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:5px">${lbl}</div>
-    <div class="plan-big">${fK(val)}</div><div class="plan-sub">splněno</div>
-    ${plan?`<div style="margin-top:9px;display:flex;justify-content:space-between;font-size:10px;color:var(--t3)"><span>Alikvótní cíl · den ${elapsed}/${total}</span><span>${fK(aliq)}</span></div>
-    <div class="prog-track" style="margin-top:4px"><div class="prog-fill" style="width:${Math.min(100,pct??0)}%;background:${bc(pct)}"></div></div>
-    <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px"><span style="color:${bc(pct)};font-weight:700">${pct??0}% alikvóty</span><span style="color:var(--t3)">Zbývá: ${fK(Math.max(0,plan-val))}</span></div>`:''}
-  </div>`;
+  document.getElementById('plan-prog').innerHTML =
+    card('📦 Jednorázové', j, aj, pj, pctJ) + card('🔄 Pravidelné', p, ap, pp, pctP);
 
-  document.getElementById('plan-prog').innerHTML=card('📦 Jednorázové',j,aj,pj,pctJ)+card('🔄 Pravidelné',p,ap,pp,pctP);
+  // Scénáře
+  const all = filtZ(bfPl).filter(z => !z.jenSch);
+  document.getElementById('sce-inner').innerHTML = '<div class="sgrid2">' + SCENARE.map(s => {
+    const g = all.filter(z => z.scenar === s);
+    const sj = g.reduce((a, z) => a + (z.pocJ || 0), 0);
+    const sp = g.reduce((a, z) => a + (z.pocP || 0), 0);
+    return `<div class="sce-c">
+      <div class="sce-nm">${s}</div>
+      <div class="sce-n">${g.length}×</div>
+      ${sj ? `<div class="sce-a" style="color:var(--accent)">J: ${fK(sj)}</div>` : ''}
+      ${sp ? `<div class="sce-a" style="color:var(--green)">P: ${fK(sp)}</div>` : ''}
+    </div>`;
+  }).join('') + '</div>';
 
-  const all=filtZ(bfPl).filter(z=>!z.jenSch);
-  document.getElementById('sce-inner').innerHTML=`<div class="sgrid2">`+SCENARE.map(s=>{
-    const g=all.filter(z=>z.scenar===s);
-    const sj=g.reduce((a,z)=>a+(z.pocJ||0),0);
-    const sp=g.reduce((a,z)=>a+(z.pocP||0),0);
-    return`<div class="sce-c"><div class="sce-nm">${s}</div><div class="sce-n">${g.length}×</div>${sj?`<div class="sce-a" style="color:var(--accent)">J: ${fK(sj)}</div>`:''}${sp?`<div class="sce-a" style="color:var(--green)">P: ${fK(sp)}</div>`:''}</div>`;
-  }).join('')+'</div>';
-
-  // Pie chart
   drawPie(all);
 
-  const sch=filtZ(bfPl).filter(z=>z.jenSch);
-  document.getElementById('sch-list').innerHTML=sch.length
-    ?sch.map(z=>`<div style="padding:5px 0;border-bottom:1px solid var(--b1);font-size:12px;display:flex;gap:8px;align-items:baseline">
+  // Schůzky
+  const sch = filtZ(bfPl).filter(z => z.jenSch);
+  document.getElementById('sch-list').innerHTML = sch.length
+    ? sch.map(z => `
+      <div style="padding:5px 0;border-bottom:1px solid var(--b1);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap">
         <span style="color:var(--t3);white-space:nowrap">${fDt(z.datumSchuzky)}</span>
-        <span style="font-weight:700;color:var(--t1)">${z.klient||'—'}</span>
-        ${z.banker?`<span style="color:var(--amber);font-size:11px">👥 ${z.banker}</span>`:''}
-        ${z.poznamka?`<span style="color:var(--t3);font-size:11px;margin-left:auto">${z.poznamka}</span>`:''}
+        <span style="font-weight:700;color:var(--t1)">${z.klient || '—'}</span>
+        ${z.banker ? `<span style="color:var(--amber);font-size:11px">👥 ${z.banker}</span>` : ''}
+        ${z.poznamka ? `<span style="color:var(--t3);font-size:11px;margin-left:auto">${z.poznamka}</span>` : ''}
       </div>`).join('')
-    :'<span style="color:var(--t3)">Žádné.</span>';
+    : '<span style="color:var(--t3)">Žádné.</span>';
 }
 
-// Render Sett
-function renderSett(){
-  buildChips('chips-exp',bfEx,'togBEx',true);
-  const ob=zaznamy.filter(z=>!z.jenSch).length;
-  const sc=zaznamy.filter(z=>z.jenSch).length;
-  document.getElementById('sett-info').innerHTML=`Celkem: <strong>${zaznamy.length}</strong> záznamů<br>Obchodů: <strong>${ob}</strong> · Schůzek: <strong>${sc}</strong><br>Bankéři: <strong>${getBankers().join(', ')||'žádní'}</strong>`;
+// ── RENDER NASTAVENÍ ─────────────────────────
+function renderSett() {
+  buildChips('chips-exp', bfEx, 'togBEx', true);
+  const ob = zaznamy.filter(z => !z.jenSch).length;
+  const sc = zaznamy.filter(z => z.jenSch).length;
+  document.getElementById('sett-info').innerHTML =
+    `Celkem: <strong>${zaznamy.length}</strong> záznamů<br>
+     Obchodů: <strong>${ob}</strong> · Schůzek: <strong>${sc}</strong><br>
+     Bankéři: <strong>${getBankers().join(', ') || 'žádní'}</strong>`;
 }
 
-// Form
-function initSce(){
-  document.getElementById('sce-btns').innerHTML=SCENARE.map(s=>`<button class="sb ${s===curSce?'active':''}" data-sce="${s}" onclick="selSce('${s}')">${s}</button>`).join('');
+// ── KOLÁČOVÝ GRAF ────────────────────────────
+function drawPie(data) {
+  const canvas = document.getElementById('pie-chart');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const SIZE = 220;
+  canvas.width = SIZE * dpr; canvas.height = SIZE * dpr;
+  canvas.style.width = SIZE + 'px'; canvas.style.height = SIZE + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const cx = 110, cy = 110, R = 88, ri = 46;
+  ctx.clearRect(0, 0, SIZE, SIZE);
+  const COLORS = ['#4da8ff','#34c97a','#ffcf5c','#ff9f43','#a78bfa'];
+  const totals = SCENARE.map(s =>
+    data.filter(z => z.scenar === s).reduce((a, z) => a + (z.pocJ || 0) + (z.pocP || 0), 0)
+  );
+  const sum = totals.reduce((a, v) => a + v, 0);
+  if (!sum) {
+    ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.04)'; ctx.beginPath(); ctx.arc(cx,cy,ri,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#4d6080'; ctx.font = '12px DM Sans,sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Žádná data', cx, cy + 5);
+    return;
+  }
+  let angle = -Math.PI / 2;
+  totals.forEach((v, i) => {
+    if (!v) return;
+    const slice = (v / sum) * Math.PI * 2;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, R, angle, angle + slice); ctx.closePath();
+    ctx.fillStyle = COLORS[i]; ctx.fill();
+    ctx.strokeStyle = '#0b1120'; ctx.lineWidth = 2; ctx.stroke();
+    angle += slice;
+  });
+  ctx.beginPath(); ctx.arc(cx, cy, ri, 0, Math.PI * 2);
+  ctx.fillStyle = '#152035'; ctx.fill();
+  ctx.fillStyle = '#f0f4ff'; ctx.textAlign = 'center';
+  ctx.font = 'bold 11px DM Mono,monospace'; ctx.fillText('Celkem', cx, cy - 6);
+  ctx.font = 'bold 12px DM Mono,monospace'; ctx.fillText(fK(sum), cx, cy + 10);
+  const active = SCENARE.map((s, i) => ({s, i, v: totals[i]})).filter(x => x.v > 0);
+  let ly = SIZE - active.length * 15 - 4;
+  active.forEach(({s, i, v}) => {
+    const pct = Math.round(v / sum * 100);
+    ctx.fillStyle = COLORS[i]; ctx.beginPath(); ctx.arc(9, ly + 3, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#8fa3c8'; ctx.font = '9.5px DM Sans,sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(`${s} — ${pct}%`, 18, ly + 7);
+    ly += 15;
+  });
 }
-function selSce(s){curSce=s;document.querySelectorAll('[data-sce]').forEach(b=>b.classList.toggle('active',b.dataset.sce===s))}
 
-document.querySelectorAll('[data-typ]').forEach(b=>b.addEventListener('click',()=>{
-  curTyp=b.dataset.typ;
-  document.querySelectorAll('[data-typ]').forEach(x=>x.classList.toggle('active',x.dataset.typ===curTyp));
-  const ob=curTyp==='Obojí', pr=curTyp==='Pravidelná';
-  // jednorázová pole
-  document.getElementById('cj-w').style.display=(curTyp==='Pravidelná')?'none':'';
-  document.getElementById('cj-lbl').textContent=ob?'Jednorázová částka (Kč)':'Částka (Kč)';
-  // pravidelná pole
-  document.getElementById('cp-w').style.display=(ob||pr)?'':'none';
-  document.getElementById('cp-date-w').style.display=(ob||pr)?'':'none';
+// ── FORM ─────────────────────────────────────
+function initSce() {
+  document.getElementById('sce-btns').innerHTML = SCENARE.map(s =>
+    `<button class="sb ${s === curSce ? 'active' : ''}" data-sce="${s}" onclick="selSce('${s}')">${s}</button>`
+  ).join('');
+}
+function selSce(s) {
+  curSce = s;
+  document.querySelectorAll('[data-sce]').forEach(b => b.classList.toggle('active', b.dataset.sce === s));
+}
+
+document.querySelectorAll('[data-typ]').forEach(b => b.addEventListener('click', () => {
+  curTyp = b.dataset.typ;
+  document.querySelectorAll('[data-typ]').forEach(x => x.classList.toggle('active', x.dataset.typ === curTyp));
+  const ob = curTyp === 'Obojí', pr = curTyp === 'Pravidelná';
+  document.getElementById('cj-w').style.display = pr ? 'none' : '';
+  document.getElementById('cj-lbl').textContent = ob ? 'Jednorázová částka (Kč)' : 'Částka (Kč)';
+  document.getElementById('cp-w').style.display = (ob || pr) ? '' : 'none';
+  document.getElementById('cp-date-w').style.display = (ob || pr) ? '' : 'none';
   updWarn();
 }));
 
-function onSp(){
-  const sb=document.getElementById('f-sp').value==='S bankéřem';
-  document.getElementById('f-bn-r').style.display=sb?'':'none';
+function onSp() {
+  const sb = document.getElementById('f-sp').value === 'S bankéřem';
+  document.getElementById('f-bn-r').style.display = sb ? '' : 'none';
   updWarn();
 }
-function togSch(){
-  onlySch=document.getElementById('f-sch').checked;
-  document.getElementById('ob-fields').style.display=onlySch?'none':'';
-  document.getElementById('f-sp-w').style.display=onlySch?'none':'';
-  document.getElementById('f-bn-r').style.display='none';
-  document.getElementById('f-bn-sch-r').style.display=onlySch?'':'none';
+function togSch() {
+  onlySch = document.getElementById('f-sch').checked;
+  document.getElementById('ob-fields').style.display = onlySch ? 'none' : '';
+  document.getElementById('f-sp-w').style.display = onlySch ? 'none' : '';
+  document.getElementById('f-bn-r').style.display = 'none';
+  document.getElementById('f-bn-sch-r').style.display = onlySch ? '' : 'none';
 }
-function autoDate(){
-  const r=document.getElementById('f-real').value,f=document.getElementById('f-fond').value;
-  const pr=r?addD(r,f.startsWith('Český')?3:5):'';
-  document.getElementById('f-prip').value=pr||'';
-  const w=document.getElementById('f-qw');
-  if(pr&&selQ){const pq=dateToQ(pr);if(pq&&!qEq(pq,selQ)){w.textContent=`⚠️ Připsání v Q${pq.q}/${pq.year}`;w.classList.add('show')}else w.classList.remove('show')}
-  else w.classList.remove('show');
+function autoDate() {
+  const r = document.getElementById('f-real').value;
+  const f = document.getElementById('f-fond').value;
+  const pr = r ? addD(r, f.startsWith('Český') ? 3 : 5) : '';
+  document.getElementById('f-prip').value = pr || '';
+  const w = document.getElementById('f-qw');
+  if (pr && selQ) {
+    const pq = dateToQ(pr);
+    if (pq && !qEq(pq, selQ)) { w.textContent = `⚠️ Připsání v Q${pq.q}/${pq.year}`; w.classList.add('show'); }
+    else w.classList.remove('show');
+  } else w.classList.remove('show');
 }
-function autoDateP(){
-  const r=document.getElementById('f-real-p').value,f=document.getElementById('f-fond-p').value;
-  const pr=r?addD(r,f.startsWith('Český')?3:5):'';
-  document.getElementById('f-prip-p').value=pr||'';
-  const w=document.getElementById('f-qw-p');
-  if(pr&&selQ){const pq=dateToQ(pr);if(pq&&!qEq(pq,selQ)){w.textContent=`⚠️ Připsání v Q${pq.q}/${pq.year}`;w.classList.add('show')}else w.classList.remove('show')}
-  else w.classList.remove('show');
+function autoDateP() {
+  const r = document.getElementById('f-real-p').value;
+  const f = document.getElementById('f-fond-p').value;
+  const pr = r ? addD(r, f.startsWith('Český') ? 3 : 5) : '';
+  document.getElementById('f-prip-p').value = pr || '';
+  const w = document.getElementById('f-qw-p');
+  if (pr && selQ) {
+    const pq = dateToQ(pr);
+    if (pq && !qEq(pq, selQ)) { w.textContent = `⚠️ Připsání v Q${pq.q}/${pq.year}`; w.classList.add('show'); }
+    else w.classList.remove('show');
+  } else w.classList.remove('show');
 }
-function updWarn(){
-  const half=document.getElementById('f-sp').value==='S bankéřem';
-  const wj=document.getElementById('wj'),wp=document.getElementById('wp');
-  if(!half){wj.classList.remove('show');wp.classList.remove('show');return}
-  const v1=Number(document.getElementById('f-c').value);
-  const v2=Number(document.getElementById('f-cp').value);
-  if(v1){wj.textContent=`50% = ${fK(v1/2)}`;wj.classList.add('show')}else wj.classList.remove('show');
-  if(curTyp==='Obojí'&&v2){wp.textContent=`50% = ${fK(v2/2)}`;wp.classList.add('show')}else wp.classList.remove('show');
+function updWarn() {
+  const half = document.getElementById('f-sp').value === 'S bankéřem';
+  const wj = document.getElementById('wj'), wp = document.getElementById('wp');
+  if (!half) { wj.classList.remove('show'); wp.classList.remove('show'); return; }
+  const v1 = Number(document.getElementById('f-c').value);
+  const v2 = Number(document.getElementById('f-cp').value);
+  if (v1) { wj.textContent = `50% = ${fK(v1 / 2)}`; wj.classList.add('show'); } else wj.classList.remove('show');
+  if (curTyp === 'Obojí' && v2) { wp.textContent = `50% = ${fK(v2 / 2)}`; wp.classList.add('show'); } else wp.classList.remove('show');
 }
 
-function openAdd(){
-  editId=null;
-  document.getElementById('m-title').textContent='Nový záznam';
-  document.getElementById('btn-sv').textContent='✅ Přidat záznam';
-  ['f-kl','f-bn','f-bn-sch','f-real','f-prip','f-c','f-cp','f-poz','f-real-p','f-prip-p'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
-  document.getElementById('f-dt').value=new Date().toISOString().slice(0,10);
-  document.getElementById('f-fond').value='Český (+3 dny)';
-  document.getElementById('f-fond-p').value='Český (+3 dny)';
-  document.getElementById('f-sp').value='Sám';
-  document.getElementById('f-sch').checked=false;
-  document.getElementById('f-qw').classList.remove('show');
-  document.getElementById('f-qw-p').classList.remove('show');
-  document.getElementById('wj').classList.remove('show');
-  document.getElementById('wp').classList.remove('show');
-  onlySch=false;curTyp='Jednorázová';curSce=SCENARE[0];
-  document.getElementById('ob-fields').style.display='';
-  document.getElementById('f-sp-w').style.display='';
-  document.getElementById('f-bn-r').style.display='none';
-  document.getElementById('f-bn-sch-r').style.display='none';
-  document.getElementById('cj-w').style.display='';
-  document.getElementById('cp-w').style.display='none';
-  document.getElementById('cp-date-w').style.display='none';
-  document.getElementById('cj-lbl').textContent='Částka (Kč)';
-  document.querySelectorAll('[data-typ]').forEach(b=>b.classList.toggle('active',b.dataset.typ===curTyp));
+function resetForm() {
+  editId = null;
+  ['f-kl','f-bn','f-bn-sch','f-real','f-prip','f-c','f-cp','f-poz','f-real-p','f-prip-p']
+    .forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+  document.getElementById('f-dt').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('f-fond').value = 'Český (+3 dny)';
+  document.getElementById('f-fond-p').value = 'Český (+3 dny)';
+  document.getElementById('f-sp').value = 'Sám';
+  document.getElementById('f-sch').checked = false;
+  ['f-qw','f-qw-p'].forEach(id => document.getElementById(id).classList.remove('show'));
+  ['wj','wp'].forEach(id => document.getElementById(id).classList.remove('show'));
+  onlySch = false; curTyp = 'Jednorázová'; curSce = SCENARE[0];
+  document.getElementById('ob-fields').style.display = '';
+  document.getElementById('f-sp-w').style.display = '';
+  document.getElementById('f-bn-r').style.display = 'none';
+  document.getElementById('f-bn-sch-r').style.display = 'none';
+  document.getElementById('cj-w').style.display = '';
+  document.getElementById('cp-w').style.display = 'none';
+  document.getElementById('cp-date-w').style.display = 'none';
+  document.getElementById('cj-lbl').textContent = 'Částka (Kč)';
+  document.querySelectorAll('[data-typ]').forEach(b => b.classList.toggle('active', b.dataset.typ === curTyp));
   initSce();
+}
+
+function openAdd() {
+  resetForm();
+  document.getElementById('m-title').textContent = 'Nový záznam';
+  document.getElementById('btn-sv').textContent = '✅ Přidat záznam';
   document.getElementById('m-add').classList.add('open');
 }
 
-async function saveZ(){
-  const sch=document.getElementById('f-dt').value;
-  if(!sch){toast('Vyplň datum schůzky');return}
-  let v1=0,v2=0,pocJ=0,pocP=0;
-  if(!onlySch){
-    const half=document.getElementById('f-sp').value==='S bankéřem';
-    v1=Number(document.getElementById('f-c').value)||0;
-    v2=Number(document.getElementById('f-cp').value)||0;
-    if(curTyp==='Obojí'&&!v1&&!v2){toast('Vyplň alespoň jednu částku');return}
-    if(curTyp!=='Obojí'&&!v1){toast('Vyplň částku');return}
-    if(curTyp==='Obojí'){pocJ=half?v1/2:v1;pocP=half?v2/2:v2}
-    else if(curTyp==='Jednorázová')pocJ=half?v1/2:v1;
-    else pocP=half?v1/2:v1;
+async function saveZ() {
+  const sch = document.getElementById('f-dt').value;
+  if (!sch) { toast('Vyplň datum schůzky'); return; }
+
+  let v1 = 0, v2 = 0, pocJ = 0, pocP = 0;
+  if (!onlySch) {
+    const half = document.getElementById('f-sp').value === 'S bankéřem';
+    v1 = Number(document.getElementById('f-c').value) || 0;
+    v2 = Number(document.getElementById('f-cp').value) || 0;
+    if (curTyp === 'Obojí' && !v1 && !v2) { toast('Vyplň alespoň jednu částku'); return; }
+    if (curTyp !== 'Obojí' && !v1) { toast('Vyplň částku'); return; }
+    if (curTyp === 'Obojí')           { pocJ = half ? v1/2 : v1; pocP = half ? v2/2 : v2; }
+    else if (curTyp === 'Jednorázová') pocJ = half ? v1/2 : v1;
+    else                               pocP = half ? v1/2 : v1;
   }
-  const prip=document.getElementById('f-prip').value;
-  const pripP=document.getElementById('f-prip-p').value;
-  const z={
-    id:editId||Date.now(),
-    klient:document.getElementById('f-kl').value.trim(),
-    banker:onlySch?document.getElementById('f-bn-sch').value.trim():document.getElementById('f-bn').value.trim(),
-    datumSchuzky:sch,
-    datumRealizace:onlySch?'':document.getElementById('f-real').value,
-    datumPripsani:onlySch?'':prip,
-    datumRealizaceP:onlySch?'':(curTyp==='Pravidelná'||curTyp==='Obojí')?document.getElementById('f-real-p').value:'',
-    datumPripsaniP:onlySch?'':(curTyp==='Pravidelná'||curTyp==='Obojí')?pripP:'',
-    fond:onlySch?'':document.getElementById('f-fond').value,
-    fondP:onlySch?'':(curTyp==='Pravidelná'||curTyp==='Obojí')?document.getElementById('f-fond-p').value:'',
-    spoluprace:onlySch?'Sám':document.getElementById('f-sp').value,
-    typ:onlySch?'—':curTyp,
-    castka:curTyp!=='Obojí'?v1:0,
-    castkaJ:curTyp==='Obojí'?v1:0,
-    castkaP:curTyp==='Obojí'?v2:0,
-    pocJ,pocP,
-    scenar:onlySch?'—':curSce,
-    poznamka:document.getElementById('f-poz').value.trim(),
-    jenSch:onlySch,
-    _ts:new Date().toISOString(),
+
+  const prip  = document.getElementById('f-prip').value;
+  const pripP = document.getElementById('f-prip-p').value;
+  const isPrOrOb = curTyp === 'Pravidelná' || curTyp === 'Obojí';
+
+  const z = {
+    id:               editId || Date.now(),
+    klient:           document.getElementById('f-kl').value.trim(),
+    banker:           onlySch
+                        ? document.getElementById('f-bn-sch').value.trim()
+                        : document.getElementById('f-bn').value.trim(),
+    datumSchuzky:     sch,
+    datumRealizace:   onlySch ? '' : document.getElementById('f-real').value,
+    datumPripsani:    onlySch ? '' : prip,
+    datumRealizaceP:  onlySch ? '' : (isPrOrOb ? document.getElementById('f-real-p').value : ''),
+    datumPripsaniP:   onlySch ? '' : (isPrOrOb ? pripP : ''),
+    fond:             onlySch ? '' : document.getElementById('f-fond').value,
+    fondP:            onlySch ? '' : (isPrOrOb ? document.getElementById('f-fond-p').value : ''),
+    spoluprace:       onlySch ? 'Sám' : document.getElementById('f-sp').value,
+    typ:              onlySch ? '—' : curTyp,
+    castka:           curTyp !== 'Obojí' ? v1 : 0,
+    castkaJ:          curTyp === 'Obojí' ? v1 : 0,
+    castkaP:          curTyp === 'Obojí' ? v2 : 0,
+    pocJ, pocP,
+    scenar:           onlySch ? '—' : curSce,
+    poznamka:         document.getElementById('f-poz').value.trim(),
+    jenSch:           onlySch,
+    _ts:              new Date().toISOString(),
   };
-  if(editId)zaznamy=zaznamy.map(x=>x.id===editId?z:x);else zaznamy.push(z);
-  await dpu('zaznamy',z);
-  closeM('m-add');toast(editId?'Uloženo ✓':'Přidáno ✓');editId=null;
-  renderAll();navTo('prehled');
+
+  if (editId) zaznamy = zaznamy.map(x => x.id === editId ? z : x);
+  else zaznamy.push(z);
+
+  await dpu('zaznamy', z);
+  closeM('m-add');
+  toast(editId ? 'Uloženo ✓' : 'Přidáno ✓');
+  editId = null;
+  renderAll();
+  navTo('prehled');
 }
 
-// Detail
-function openDet(id){
-  const z=zaznamy.find(x=>x.id===id);if(!z)return;
-  detId=id;
-  document.getElementById('det-t').textContent=z.klient||'Záznam';
-  const ln=[];
-  if(z.jenSch){ln.push('Typ: 📅 Schůzka bez obchodu')}
-  else{
-    ln.push(`Typ: ${z.typ}`);ln.push(`Scénář: ${z.scenar}`);
-    ln.push(`Fond: ${z.fond}`);ln.push(`Spolupráce: ${z.spoluprace}${z.banker?' ('+z.banker+')':''}`);
-    if(z.typ==='Obojí'){
+// ── DETAIL ───────────────────────────────────
+function openDet(id) {
+  const z = zaznamy.find(x => x.id === id); if (!z) return;
+  detId = id;
+  document.getElementById('det-t').textContent = z.klient || 'Záznam';
+  const ln = [];
+  if (z.jenSch) {
+    ln.push('Typ: 📅 Schůzka bez obchodu');
+    if (z.banker) ln.push(`Bankéř: ${z.banker}`);
+  } else {
+    ln.push(`Typ: ${z.typ}`);
+    ln.push(`Scénář: ${z.scenar}`);
+    ln.push(`Fond: ${z.fond}`);
+    ln.push(`Spolupráce: ${z.spoluprace}${z.banker ? ' (' + z.banker + ')' : ''}`);
+    if (z.typ === 'Obojí') {
       ln.push(`Částka J: ${fK(z.castkaJ)} → poč. ${fK(z.pocJ)}`);
       ln.push(`Částka P: ${fK(z.castkaP)}/měs. → poč. ${fK(z.pocP)}`);
-    } else ln.push(`Částka: ${fK(z.castka)} → poč. ${fK(z.pocJ+z.pocP)}`);
+    } else {
+      ln.push(`Částka: ${fK(z.castka)} → poč. ${fK((z.pocJ || 0) + (z.pocP || 0))}`);
+    }
   }
   ln.push(`Schůzka: ${fDtF(z.datumSchuzky)}`);
-  if(!z.jenSch){
-    if(z.datumRealizace)ln.push(`Realizace (J): ${fDtF(z.datumRealizace)}`);
-    if(z.datumPripsani)ln.push(`Připsání (J): ${fDtF(z.datumPripsani)}`);
-    if(z.datumRealizaceP)ln.push(`Realizace (P): ${fDtF(z.datumRealizaceP)}`);
-    if(z.datumPripsaniP)ln.push(`Připsání (P): ${fDtF(z.datumPripsaniP)}`);
+  if (!z.jenSch) {
+    if (z.datumRealizace) ln.push(`Realizace (J): ${fDtF(z.datumRealizace)}`);
+    if (z.datumPripsani)  ln.push(`Připsání (J): ${fDtF(z.datumPripsani)}`);
+    if (z.datumRealizaceP) ln.push(`Realizace (P): ${fDtF(z.datumRealizaceP)}`);
+    if (z.datumPripsaniP)  ln.push(`Připsání (P): ${fDtF(z.datumPripsaniP)}`);
   }
-  if(z.poznamka)ln.push(`Poznámka: ${z.poznamka}`);
-  document.getElementById('det-b').innerHTML=ln.join('<br>');
+  if (z.poznamka) ln.push(`Poznámka: ${z.poznamka}`);
+  document.getElementById('det-b').innerHTML = ln.join('<br>');
   document.getElementById('m-det').classList.add('open');
 }
 
-function editFromDet(){
-  const z=zaznamy.find(x=>x.id===detId);if(!z)return;
-  closeM('m-det');editId=z.id;
-  document.getElementById('m-title').textContent='Upravit záznam';
-  document.getElementById('btn-sv').textContent='💾 Uložit změny';
-  document.getElementById('f-kl').value=z.klient||'';
-  document.getElementById('f-dt').value=z.datumSchuzky||'';
-  document.getElementById('f-poz').value=z.poznamka||'';
-  onlySch=z.jenSch||false;
-  document.getElementById('f-sch').checked=onlySch;
-  document.getElementById('ob-fields').style.display=onlySch?'none':'';
-  document.getElementById('f-sp-w').style.display=onlySch?'none':'';
-  document.getElementById('f-bn-sch-r').style.display=onlySch?'':'none';
-  if(onlySch){document.getElementById('f-bn-sch').value=z.banker||''}
-  if(!onlySch){
-    document.getElementById('f-bn').value=z.banker||'';
-    document.getElementById('f-real').value=z.datumRealizace||'';
-    document.getElementById('f-prip').value=z.datumPripsani||'';
-    document.getElementById('f-fond').value=z.fond||'Český (+3 dny)';
-    document.getElementById('f-sp').value=z.spoluprace||'Sám';
-    document.getElementById('f-bn-r').style.display=z.spoluprace==='S bankéřem'?'':'none';
-    curTyp=z.typ||'Jednorázová';curSce=z.scenar||SCENARE[0];
-    const isPr=curTyp==='Pravidelná',isOb=curTyp==='Obojí';
-    if(isOb){
-      document.getElementById('f-c').value=z.castkaJ||'';
-      document.getElementById('f-cp').value=z.castkaP||'';
-      document.getElementById('cp-w').style.display='';
-      document.getElementById('cp-date-w').style.display='';
-      document.getElementById('cj-w').style.display='';
-      document.getElementById('cj-lbl').textContent='Jednorázová částka (Kč)';
-    } else if(isPr){
-      document.getElementById('f-cp').value=z.castka||'';
-      document.getElementById('cp-w').style.display='';
-      document.getElementById('cp-date-w').style.display='';
-      document.getElementById('cj-w').style.display='none';
+function editFromDet() {
+  const z = zaznamy.find(x => x.id === detId); if (!z) return;
+  closeM('m-det');
+  resetForm();
+  editId = z.id;
+  document.getElementById('m-title').textContent = 'Upravit záznam';
+  document.getElementById('btn-sv').textContent = '💾 Uložit změny';
+  document.getElementById('f-kl').value = z.klient || '';
+  document.getElementById('f-dt').value = z.datumSchuzky || '';
+  document.getElementById('f-poz').value = z.poznamka || '';
+  onlySch = z.jenSch || false;
+  document.getElementById('f-sch').checked = onlySch;
+  document.getElementById('ob-fields').style.display = onlySch ? 'none' : '';
+  document.getElementById('f-sp-w').style.display = onlySch ? 'none' : '';
+  document.getElementById('f-bn-sch-r').style.display = onlySch ? '' : 'none';
+  if (onlySch) {
+    document.getElementById('f-bn-sch').value = z.banker || '';
+  } else {
+    document.getElementById('f-bn').value = z.banker || '';
+    document.getElementById('f-real').value = z.datumRealizace || '';
+    document.getElementById('f-prip').value = z.datumPripsani || '';
+    document.getElementById('f-fond').value = z.fond || 'Český (+3 dny)';
+    document.getElementById('f-sp').value = z.spoluprace || 'Sám';
+    document.getElementById('f-bn-r').style.display = z.spoluprace === 'S bankéřem' ? '' : 'none';
+    curTyp = z.typ || 'Jednorázová'; curSce = z.scenar || SCENARE[0];
+    const isPr = curTyp === 'Pravidelná', isOb = curTyp === 'Obojí';
+    document.getElementById('cj-w').style.display = isPr ? 'none' : '';
+    document.getElementById('cj-lbl').textContent = isOb ? 'Jednorázová částka (Kč)' : 'Částka (Kč)';
+    document.getElementById('cp-w').style.display = (isPr || isOb) ? '' : 'none';
+    document.getElementById('cp-date-w').style.display = (isPr || isOb) ? '' : 'none';
+    if (isOb) {
+      document.getElementById('f-c').value = z.castkaJ || '';
+      document.getElementById('f-cp').value = z.castkaP || '';
     } else {
-      document.getElementById('f-c').value=z.castka||'';
-      document.getElementById('cp-w').style.display='none';
-      document.getElementById('cp-date-w').style.display='none';
-      document.getElementById('cj-w').style.display='';
-      document.getElementById('cj-lbl').textContent='Částka (Kč)';
+      document.getElementById('f-c').value = z.castka || '';
     }
-    if(isPr||isOb){
-      document.getElementById('f-real-p').value=z.datumRealizaceP||'';
-      document.getElementById('f-prip-p').value=z.datumPripsaniP||'';
-      document.getElementById('f-fond-p').value=z.fondP||'Český (+3 dny)';
+    if (isPr || isOb) {
+      document.getElementById('f-real-p').value = z.datumRealizaceP || '';
+      document.getElementById('f-prip-p').value = z.datumPripsaniP || '';
+      document.getElementById('f-fond-p').value = z.fondP || 'Český (+3 dny)';
     }
-    document.querySelectorAll('[data-typ]').forEach(b=>b.classList.toggle('active',b.dataset.typ===curTyp));
+    document.querySelectorAll('[data-typ]').forEach(b => b.classList.toggle('active', b.dataset.typ === curTyp));
     initSce();
   }
   document.getElementById('m-add').classList.add('open');
 }
 
-async function delZ(){
-  if(!detId||!confirm('Smazat?'))return;
-  zaznamy=zaznamy.filter(x=>x.id!==detId);
-  await ddl('zaznamy',detId);
-  closeM('m-det');toast('Smazáno');renderAll();
+async function delZ() {
+  if (!detId || !confirm('Smazat tento záznam?')) return;
+  zaznamy = zaznamy.filter(x => x.id !== detId);
+  await ddl('zaznamy', detId);
+  closeM('m-det');
+  toast('Smazáno');
+  renderAll();
 }
 
-// Export Excel
-function exportExcel(){
-  const{q,year,elapsed,total,ratio}=qMeta();
-  const ob=filtZ(bfEx).filter(z=>!z.jenSch);
-  const sc=filtZ(bfEx).filter(z=>z.jenSch);
-  const{j:pj,p:pp}=getPl();
-  const j=ob.reduce((s,z)=>s+(z.pocJ||0),0);
-  const p=ob.reduce((s,z)=>s+(z.pocP||0),0);
-  const aj=Math.round(ratio*pj),ap=Math.round(ratio*pp);
-  const czk=v=>({v:Number(v)||0,t:'n',z:'#,##0 "Kč"'});
-  const wb=XLSX.utils.book_new();
-  const fn=bfEx.length?`Filtr: ${bfEx.join(', ')}`:'Všichni';
+// ── EXPORT EXCEL ─────────────────────────────
+function exportExcel() {
+  const {q, year, elapsed, total, ratio} = qMeta();
+  const ob = filtZ(bfEx).filter(z => !z.jenSch);
+  const sc = filtZ(bfEx).filter(z => z.jenSch);
+  const {j: pj, p: pp} = getPl();
+  const j = ob.reduce((s, z) => s + (z.pocJ || 0), 0);
+  const p = ob.reduce((s, z) => s + (z.pocP || 0), 0);
+  const aj = Math.round(ratio * pj), ap = Math.round(ratio * pp);
+  const czk = v => ({v: Number(v) || 0, t: 'n', z: '#,##0 "Kč"'});
+  const wb = XLSX.utils.book_new();
+  const fn = bfEx.length ? `Filtr: ${bfEx.join(', ')}` : 'Všichni';
 
   // Souhrn
-  const ws1=XLSX.utils.aoa_to_sheet([
+  const ws1 = XLSX.utils.aoa_to_sheet([
     [`Investiční report — Q${q}/${year}`],
-    [`Vygenerováno: ${new Date().toLocaleDateString('cs-CZ')}  |  Den kvartálu: ${elapsed}/${total} (${Math.round(ratio*100)}%)`],
-    [fn],[],
+    [`Vygenerováno: ${new Date().toLocaleDateString('cs-CZ')}  |  Den: ${elapsed}/${total} (${Math.round(ratio*100)}%)`],
+    [fn], [],
     ['Ukazatel','Jednorázové','Pravidelné'],
-    ['Kvartální plán',czk(pj),czk(pp)],
-    ['Alikvótní cíl',czk(aj),czk(ap)],
-    ['Skutečnost',czk(j),czk(p)],
-    ['Plnění alikvóty',pj?{v:j/(aj||1),t:'n',z:'0%'}:'—',pp?{v:p/(ap||1),t:'n',z:'0%'}:'—'],
-    ['Zbývá do konce Q',czk(Math.max(0,pj-j)),czk(Math.max(0,pp-p))],
-    [],[`Celkem obchodů`,{v:ob.length,t:'n'}],['Schůzky bez obchodu',{v:sc.length,t:'n'}],
-    ['S bankéřem',{v:ob.filter(z=>z.spoluprace==='S bankéřem').length,t:'n'}],
+    ['Kvartální plán', czk(pj), czk(pp)],
+    ['Alikvótní cíl', czk(aj), czk(ap)],
+    ['Skutečnost', czk(j), czk(p)],
+    ['Plnění alikvóty', pj ? {v: j/(aj||1), t:'n', z:'0%'} : '—', pp ? {v: p/(ap||1), t:'n', z:'0%'} : '—'],
+    ['Zbývá do konce Q', czk(Math.max(0,pj-j)), czk(Math.max(0,pp-p))],
+    [], [`Celkem obchodů`, {v:ob.length,t:'n'}],
+    ['Schůzky bez obchodu', {v:sc.length,t:'n'}],
+    ['S bankéřem', {v:ob.filter(z=>z.spoluprace==='S bankéřem').length,t:'n'}],
   ]);
-  ws1['!cols']=[{wch:28},{wch:20},{wch:20}];
-  XLSX.utils.book_append_sheet(wb,ws1,'Souhrn');
+  ws1['!cols'] = [{wch:28},{wch:20},{wch:20}];
+  XLSX.utils.book_append_sheet(wb, ws1, 'Souhrn');
 
-  // Detail — nové pořadí: Bankéř → Klient → Poč. J → Poč. P → částky → datumy
-  const hdr=['Bankéř','Klient','Poč. jednorázová','Poč. pravidelná','Jednorázová','Pravidelná','Datum schůzky','Datum realizace (J)','Datum připsání (J)','Datum realizace (P)','Datum připsání (P)','Fond','Fond (P)','Typ','Spolupráce','Scénář','Poznámka'];
-  const rows=ob.map(z=>[
-    z.banker||'',z.klient,
-    czk(z.pocJ),czk(z.pocP),
+  // Detail — Bankéř → Klient → Poč. J → Poč. P → ...
+  const hdr = ['Bankéř','Klient','Poč. jednorázová','Poč. pravidelná','Jednorázová','Pravidelná',
+    'Datum schůzky','Datum realizace (J)','Datum připsání (J)','Datum realizace (P)','Datum připsání (P)',
+    'Fond','Fond (P)','Typ','Spolupráce','Scénář','Poznámka'];
+  const rows = ob.map(z => [
+    z.banker||'', z.klient,
+    czk(z.pocJ), czk(z.pocP),
     czk(z.typ==='Obojí'?z.castkaJ:z.typ==='Jednorázová'?z.castka:0),
     czk(z.typ==='Obojí'?z.castkaP:z.typ==='Pravidelná'?z.castka:0),
-    z.datumSchuzky,z.datumRealizace||'',z.datumPripsani||'',
-    z.datumRealizaceP||'',z.datumPripsaniP||'',
-    z.fond,z.fondP||'',z.typ,z.spoluprace,z.scenar,z.poznamka||'']);
-  const ws2=XLSX.utils.aoa_to_sheet([hdr,...rows]);
-  ws2['!cols']=[14,18,16,16,14,14,14,14,14,14,14,16,16,12,14,22,20].map(w=>({wch:w}));
-  XLSX.utils.book_append_sheet(wb,ws2,'Detail obchodů');
+    z.datumSchuzky, z.datumRealizace||'', z.datumPripsani||'',
+    z.datumRealizaceP||'', z.datumPripsaniP||'',
+    z.fond, z.fondP||'', z.typ, z.spoluprace, z.scenar, z.poznamka||''
+  ]);
+  const ws2 = XLSX.utils.aoa_to_sheet([hdr, ...rows]);
+  ws2['!cols'] = [14,18,16,16,14,14,14,14,14,14,14,16,16,12,14,22,20].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws2, 'Detail obchodů');
 
   // Scénáře
-  const ws3=XLSX.utils.aoa_to_sheet([['Scénář','Počet','Jednorázové','Pravidelné','Celkem'],
-    ...SCENARE.map(s=>{const g=ob.filter(z=>z.scenar===s);const sj=g.reduce((a,z)=>a+(z.pocJ||0),0);const sp=g.reduce((a,z)=>a+(z.pocP||0),0);return[s,{v:g.length,t:'n'},czk(sj),czk(sp),czk(sj+sp)]}),
-    [],[`CELKEM`,{v:ob.length,t:'n'},czk(j),czk(p),czk(j+p)]]);
-  ws3['!cols']=[30,10,20,20,20].map(w=>({wch:w}));
-  XLSX.utils.book_append_sheet(wb,ws3,'Podle scénáře');
+  const ws3 = XLSX.utils.aoa_to_sheet([
+    ['Scénář','Počet','Jednorázové','Pravidelné','Celkem'],
+    ...SCENARE.map(s => {
+      const g = ob.filter(z => z.scenar === s);
+      const sj = g.reduce((a,z)=>a+(z.pocJ||0),0);
+      const sp = g.reduce((a,z)=>a+(z.pocP||0),0);
+      return [s, {v:g.length,t:'n'}, czk(sj), czk(sp), czk(sj+sp)];
+    }),
+    [], ['CELKEM', {v:ob.length,t:'n'}, czk(j), czk(p), czk(j+p)]
+  ]);
+  ws3['!cols'] = [30,10,20,20,20].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws3, 'Podle scénáře');
 
   // Bankéři
-  const bks=[...new Set(ob.filter(z=>z.banker).map(z=>z.banker))];
-  const br=bks.map(b=>{const g=ob.filter(z=>z.banker===b);const bj=g.reduce((a,z)=>a+(z.pocJ||0),0);const bp=g.reduce((a,z)=>a+(z.pocP||0),0);return[b,{v:g.length,t:'n'},czk(bj),czk(bp),czk(bj+bp)]});
-  const sm=ob.filter(z=>!z.banker);
-  br.push(['(Sám)',{v:sm.length,t:'n'},czk(sm.reduce((a,z)=>a+(z.pocJ||0),0)),czk(sm.reduce((a,z)=>a+(z.pocP||0),0)),czk(sm.reduce((a,z)=>a+(z.pocJ||0)+(z.pocP||0),0))]);
-  const ws4=XLSX.utils.aoa_to_sheet([['Bankéř','Počet','Jednorázové','Pravidelné','Celkem'],...br]);
-  ws4['!cols']=[24,10,20,20,20].map(w=>({wch:w}));
-  XLSX.utils.book_append_sheet(wb,ws4,'Podle bankéře');
+  const bks = [...new Set(ob.filter(z=>z.banker).map(z=>z.banker))];
+  const br = bks.map(b => {
+    const g = ob.filter(z=>z.banker===b);
+    const bj = g.reduce((a,z)=>a+(z.pocJ||0),0);
+    const bp = g.reduce((a,z)=>a+(z.pocP||0),0);
+    return [b, {v:g.length,t:'n'}, czk(bj), czk(bp), czk(bj+bp)];
+  });
+  const sm = ob.filter(z=>!z.banker);
+  br.push(['(Sám)', {v:sm.length,t:'n'},
+    czk(sm.reduce((a,z)=>a+(z.pocJ||0),0)),
+    czk(sm.reduce((a,z)=>a+(z.pocP||0),0)),
+    czk(sm.reduce((a,z)=>a+(z.pocJ||0)+(z.pocP||0),0))]);
+  const ws4 = XLSX.utils.aoa_to_sheet([['Bankéř','Počet','Jednorázové','Pravidelné','Celkem'], ...br]);
+  ws4['!cols'] = [24,10,20,20,20].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws4, 'Podle bankéře');
 
   // Schůzky
-  const ws5=XLSX.utils.aoa_to_sheet([['Datum schůzky','Klient','Poznámka'],...sc.map(z=>[z.datumSchuzky,z.klient||'',z.poznamka||''])]);
-  ws5['!cols']=[14,24,30].map(w=>({wch:w}));
-  XLSX.utils.book_append_sheet(wb,ws5,'Schůzky bez obchodu');
+  const ws5 = XLSX.utils.aoa_to_sheet([
+    ['Datum schůzky','Klient','Bankéř','Poznámka'],
+    ...sc.map(z => [z.datumSchuzky, z.klient||'', z.banker||'', z.poznamka||''])
+  ]);
+  ws5['!cols'] = [14,24,18,30].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws5, 'Schůzky bez obchodu');
 
-  XLSX.writeFile(wb,`investice_Q${q}_${year}${bfEx.length?'_'+bfEx.join('-'):''}.xlsx`);
+  XLSX.writeFile(wb, `investice_Q${q}_${year}${bfEx.length?'_'+bfEx.join('-'):''}.xlsx`);
   toast('Excel se stahuje…');
 }
 
-// JSON
-function exportJSON(){
-  const blob=new Blob([JSON.stringify({version:2,exportedAt:new Date().toISOString(),zaznamy},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`investice_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();
+// ── JSON ZÁLOHA ──────────────────────────────
+function exportJSON() {
+  const blob = new Blob([JSON.stringify({version:2, exportedAt:new Date().toISOString(), zaznamy}, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `investice_backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
   toast('JSON záloha stažena ✓');
 }
 
-// Import
-document.getElementById('imp-file').addEventListener('change',async e=>{
-  const file=e.target.files[0];if(!file)return;e.target.value='';
-  const st=document.getElementById('imp-st');st.style.display='block';st.textContent='Načítám…';
-  try{
-    if(file.name.endsWith('.json')){
-      const data=JSON.parse(await file.text());
-      const recs=data.zaznamy||[];
-      const ex=new Set(zaznamy.map(z=>z.id));
-      let a=0,s=0;
-      for(const z of recs){if(ex.has(z.id)){s++;continue}await dpu('zaznamy',z);zaznamy.push(z);ex.add(z.id);a++}
-      st.innerHTML=`✅ <strong>JSON OK</strong> · Přidáno: <strong>${a}</strong>, přeskočeno: <strong>${s}</strong>`;
-    }else{
-      const wb=XLSX.read(await file.arrayBuffer(),{type:'array'});
-      const sheet=wb.Sheets['Detail obchodů']||wb.Sheets[wb.SheetNames[0]];
-      const rows=XLSX.utils.sheet_to_json(sheet).filter(r=>r['Datum schůzky']);
-      const ex=new Set(zaznamy.map(z=>z.datumSchuzky+'|'+z.klient+'|'+(z.castka||0)));
-      let a=0,s=0;
-      for(const r of rows){
-        const k=r['Datum schůzky']+'|'+r['Klient']+'|'+(parseFloat(r['Jednorázová'])||0);
-        if(ex.has(k)){s++;continue}
-        const z={id:Date.now()+a,
-          klient:r['Klient']||'',banker:r['Bankéř']||'',
-          datumSchuzky:r['Datum schůzky']||'',
-          datumRealizace:r['Datum realizace (J)']||r['Datum realizace']||'',
-          datumPripsani:r['Datum připsání (J)']||r['Datum připsání']||'',
-          datumRealizaceP:r['Datum realizace (P)']||'',
-          datumPripsaniP:r['Datum připsání (P)']||'',
-          fond:r['Fond']||'Český (+3 dny)',fondP:r['Fond (P)']||'',
-          spoluprace:r['Spolupráce']||'Sám',typ:r['Typ']||'Jednorázová',
-          castka:parseFloat(r['Jednorázová'])||0,
-          castkaJ:parseFloat(r['Jednorázová'])||0,
-          castkaP:parseFloat(r['Pravidelná'])||0,
-          pocJ:parseFloat(r['Poč. jednorázová'])||0,
-          pocP:parseFloat(r['Poč. pravidelná'])||0,
-          scenar:r['Scénář']||SCENARE[0],poznamka:r['Poznámka']||'',
-          jenSch:false,_ts:new Date().toISOString()};
-        await dpu('zaznamy',z);zaznamy.push(z);ex.add(k);a++;
+// ── IMPORT ───────────────────────────────────
+document.getElementById('imp-file').addEventListener('change', async e => {
+  const file = e.target.files[0]; if (!file) return;
+  e.target.value = '';
+  const st = document.getElementById('imp-st');
+  st.style.display = 'block'; st.textContent = 'Načítám…';
+  try {
+    if (file.name.endsWith('.json')) {
+      const data = JSON.parse(await file.text());
+      const recs = data.zaznamy || [];
+      const ex = new Set(zaznamy.map(z => z.id));
+      let a = 0, s = 0;
+      for (const z of recs) {
+        if (ex.has(z.id)) { s++; continue; }
+        await dpu('zaznamy', z); zaznamy.push(z); ex.add(z.id); a++;
       }
-      st.innerHTML=`✅ <strong>Excel OK</strong> · Přidáno: <strong>${a}</strong>, přeskočeno: <strong>${s}</strong>`;
+      st.innerHTML = `✅ <strong>JSON OK</strong> · Přidáno: <strong>${a}</strong>, přeskočeno: <strong>${s}</strong>`;
+    } else {
+      const wb2 = XLSX.read(await file.arrayBuffer(), {type:'array'});
+      const sheet = wb2.Sheets['Detail obchodů'] || wb2.Sheets[wb2.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet).filter(r => r['Datum schůzky']);
+      const ex = new Set(zaznamy.map(z => z.datumSchuzky + '|' + z.klient + '|' + (z.castka || 0)));
+      let a = 0, s = 0;
+      for (const r of rows) {
+        const k = r['Datum schůzky'] + '|' + r['Klient'] + '|' + (parseFloat(r['Jednorázová']) || 0);
+        if (ex.has(k)) { s++; continue; }
+        const z = {
+          id: Date.now() + a,
+          klient: r['Klient'] || '', banker: r['Bankéř'] || '',
+          datumSchuzky: r['Datum schůzky'] || '',
+          datumRealizace: r['Datum realizace (J)'] || r['Datum realizace'] || '',
+          datumPripsani: r['Datum připsání (J)'] || r['Datum připsání'] || '',
+          datumRealizaceP: r['Datum realizace (P)'] || '',
+          datumPripsaniP: r['Datum připsání (P)'] || '',
+          fond: r['Fond'] || 'Český (+3 dny)', fondP: r['Fond (P)'] || '',
+          spoluprace: r['Spolupráce'] || 'Sám', typ: r['Typ'] || 'Jednorázová',
+          castka: parseFloat(r['Jednorázová']) || 0,
+          castkaJ: parseFloat(r['Jednorázová']) || 0,
+          castkaP: parseFloat(r['Pravidelná']) || 0,
+          pocJ: parseFloat(r['Poč. jednorázová']) || 0,
+          pocP: parseFloat(r['Poč. pravidelná']) || 0,
+          scenar: r['Scénář'] || SCENARE[0], poznamka: r['Poznámka'] || '',
+          jenSch: false, _ts: new Date().toISOString()
+        };
+        await dpu('zaznamy', z); zaznamy.push(z); ex.add(k); a++;
+      }
+      st.innerHTML = `✅ <strong>Excel OK</strong> · Přidáno: <strong>${a}</strong>, přeskočeno: <strong>${s}</strong>`;
     }
-    toast('Import OK ✓');renderAll();
-  }catch(err){console.error(err);st.textContent='❌ Chyba: '+err.message}
+    toast('Import OK ✓'); renderAll();
+  } catch(err) {
+    console.error(err); st.textContent = '❌ Chyba: ' + err.message;
+  }
 });
 
-// ── PIE CHART ─────────────────────────────────
-function drawPie(data){
-  const canvas=document.getElementById('pie-chart');
-  if(!canvas)return;
-  const dpr=window.devicePixelRatio||1;
-  const SIZE=220;
-  canvas.width=SIZE*dpr; canvas.height=SIZE*dpr;
-  canvas.style.width=SIZE+'px'; canvas.style.height=SIZE+'px';
-  const ctx=canvas.getContext('2d');
-  ctx.scale(dpr,dpr);
-  const cx=110,cy=110,R=88,ri=46;
-  ctx.clearRect(0,0,SIZE,SIZE);
-  const COLORS=['#4da8ff','#34c97a','#ffcf5c','#ff9f43','#a78bfa'];
-  const totals=SCENARE.map(s=>data.filter(z=>z.scenar===s).reduce((a,z)=>a+(z.pocJ||0)+(z.pocP||0),0));
-  const sum=totals.reduce((a,v)=>a+v,0);
-  if(!sum){
-    ctx.fillStyle='rgba(255,255,255,.07)';ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,.04)';ctx.beginPath();ctx.arc(cx,cy,ri,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#4d6080';ctx.font='12px DM Sans,sans-serif';ctx.textAlign='center';ctx.fillText('Žádná data',cx,cy+5);
-    return;
-  }
-  let angle=-Math.PI/2;
-  totals.forEach((v,i)=>{
-    if(!v)return;
-    const slice=(v/sum)*Math.PI*2;
-    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,R,angle,angle+slice);ctx.closePath();
-    ctx.fillStyle=COLORS[i];ctx.fill();
-    ctx.strokeStyle='#0b1120';ctx.lineWidth=2;ctx.stroke();
-    angle+=slice;
-  });
-  // donut hole
-  ctx.beginPath();ctx.arc(cx,cy,ri,0,Math.PI*2);
-  ctx.fillStyle='#152035';ctx.fill();
-  // center label
-  ctx.fillStyle='#f0f4ff';ctx.textAlign='center';
-  ctx.font='bold 11px DM Mono,monospace';
-  ctx.fillText('Celkem',cx,cy-6);
-  ctx.font='bold 13px DM Mono,monospace';
-  ctx.fillText(fK(sum),cx,cy+10);
-  // legend below chart — draw outside circle in bottom margin
-  const active=SCENARE.map((s,i)=>({s,i,v:totals[i]})).filter(x=>x.v>0);
-  let ly=SIZE-active.length*15-2;
-  active.forEach(({s,i,v})=>{
-    const pct=Math.round(v/sum*100);
-    ctx.fillStyle=COLORS[i];ctx.beginPath();ctx.arc(9,ly+3,4,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#8fa3c8';ctx.font='9.5px DM Sans,sans-serif';ctx.textAlign='left';
-    ctx.fillText(`${s} — ${pct}%`,18,ly+7);
-    ly+=15;
-  });
-}
-
-// ── PRINT REPORT ──────────────────────────────
-function openPrintModal(){
-  bfPrint=[];
-  buildChips('chips-print',bfPrint,'togBPrint',true);
-  // default: current Q range
-  const{start,end}=qMeta();
-  document.getElementById('pr-from').value=start.toISOString().slice(0,10);
-  document.getElementById('pr-to').value=end.toISOString().slice(0,10);
-  updatePrCount();
+// ── PRINT REPORT ─────────────────────────────
+function openPrintModal() {
+  bfPrint = [];
+  buildChips('chips-print', bfPrint, 'togBPrint', true);
+  const {start, end} = qMeta();
+  document.getElementById('pr-from').value = start.toISOString().slice(0, 10);
+  document.getElementById('pr-to').value   = end.toISOString().slice(0, 10);
+  updPrCount();
   document.getElementById('m-print').classList.add('open');
 }
-
-function updatePrCount(){
-  const from=document.getElementById('pr-from').value;
-  const to=document.getElementById('pr-to').value;
-  const data=getPrintData(from,to,bfPrint);
-  document.getElementById('pr-count').textContent=`${data.length} obchodů ve výběru`;
+function updPrCount() {
+  const from = document.getElementById('pr-from').value;
+  const to   = document.getElementById('pr-to').value;
+  document.getElementById('pr-count').textContent = `${getPrintData(from, to, bfPrint).length} obchodů ve výběru`;
 }
-document.getElementById('pr-from')?.addEventListener('input',updatePrCount);
-document.getElementById('pr-to')?.addEventListener('input',updatePrCount);
+document.getElementById('pr-from').addEventListener('input', updPrCount);
+document.getElementById('pr-to').addEventListener('input', updPrCount);
 
-function getPrintData(from,to,bf){
-  return zaznamy.filter(z=>{
-    if(z.jenSch)return false;
-    const d=z.datumSchuzky||'';
-    if(from&&d<from)return false;
-    if(to&&d>to)return false;
-    if(bf.length&&!bf.includes(z.banker))return false;
+function getPrintData(from, to, bf) {
+  return zaznamy.filter(z => {
+    if (z.jenSch) return false;
+    const d = z.datumSchuzky || '';
+    if (from && d < from) return false;
+    if (to   && d > to)   return false;
+    if (bf.length && !bf.includes(z.banker)) return false;
     return true;
-  }).sort((a,b)=>(a.banker||'').localeCompare(b.banker||'')||(a.datumSchuzky||'').localeCompare(b.datumSchuzky||''));
+  }).sort((a, b) =>
+    (a.banker || '').localeCompare(b.banker || '') ||
+    (a.datumSchuzky || '').localeCompare(b.datumSchuzky || '')
+  );
 }
 
-function doPrint(){
-  const from=document.getElementById('pr-from').value;
-  const to=document.getElementById('pr-to').value;
-  const data=getPrintData(from,to,bfPrint);
-  const title=`Investiční přehled${from&&to?' · '+fDt(from)+' – '+fDt(to):''}`;
-  const filterNote=bfPrint.length?`Bankéř: ${bfPrint.join(', ')}`:'Všichni bankéři';
+function doPrint() {
+  const from = document.getElementById('pr-from').value;
+  const to   = document.getElementById('pr-to').value;
+  const data = getPrintData(from, to, bfPrint);
+  const title = `Investiční přehled${from && to ? ' · ' + fDt(from) + ' – ' + fDt(to) : ''}`;
+  const filterNote = bfPrint.length ? `Bankéř: ${bfPrint.join(', ')}` : 'Všichni bankéři';
+  const totJ = data.reduce((s, z) => s + (z.pocJ || 0), 0);
+  const totP = data.reduce((s, z) => s + (z.pocP || 0), 0);
 
-  const rows=data.map(z=>{
-    const isHalf=z.spoluprace==='S bankéřem';
-    const jLabel=isHalf?`<span style="font-size:9px;opacity:.7;display:block">½ obchodu</span>`:'';
-    const pLabel=isHalf?`<span style="font-size:9px;opacity:.7;display:block">½ obchodu</span>`:'';
-    return`<tr>
-      <td class="td-banker">${z.banker||'<span style="opacity:.4">—</span>'}</td>
-      <td class="td-klient">${z.klient||'—'}</td>
-      <td class="td-amt">${z.pocJ?`<span class="amt-j">${fK(z.pocJ)}</span>${jLabel}`:'<span style="opacity:.3">—</span>'}</td>
-      <td class="td-amt">${z.pocP?`<span class="amt-p">${fK(z.pocP)}</span>${pLabel}`:'<span style="opacity:.3">—</span>'}</td>
+  const rows = data.map(z => {
+    const isHalf = z.spoluprace === 'S bankéřem';
+    const half = isHalf ? '<span class="half">½ obchodu</span>' : '';
+    return `<tr>
+      <td class="td-b">${z.banker || '<span class="dim">—</span>'}</td>
+      <td class="td-k">${z.klient || '—'}</td>
+      <td class="td-a">${z.pocJ ? `<span class="aj">${fK(z.pocJ)}</span>${half}` : '<span class="dim">—</span>'}</td>
+      <td class="td-a">${z.pocP ? `<span class="ap">${fK(z.pocP)}</span>${half}` : '<span class="dim">—</span>'}</td>
       <td>${fDt(z.datumSchuzky)}</td>
       <td>${z.typ}</td>
       <td>${z.scenar}</td>
-      <td style="color:#555">${z.poznamka||''}</td>
+      <td class="td-n">${z.poznamka || ''}</td>
     </tr>`;
   }).join('');
 
-  const totJ=data.reduce((s,z)=>s+(z.pocJ||0),0);
-  const totP=data.reduce((s,z)=>s+(z.pocP||0),0);
-
-  const html=`<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8">
 <title>${title}</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=DM+Mono:wght@500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;font-size:11px;color:#111;background:#fff;padding:18px 22px}
-h1{font-size:18px;font-weight:800;letter-spacing:-.4px;color:#0b1120;margin-bottom:2px}
-.meta{font-size:10px;color:#666;margin-bottom:14px}
-table{width:100%;border-collapse:collapse;font-size:10.5px}
+body{font-family:'DM Sans',sans-serif;font-size:11px;color:#111;background:#fff;padding:16px 20px}
+h1{font-size:17px;font-weight:800;letter-spacing:-.4px;color:#0b1120;margin-bottom:2px}
+.meta{font-size:10px;color:#777;margin-bottom:12px}
+table{width:100%;border-collapse:collapse}
 th{padding:7px 8px;text-align:left;background:#0b1120;color:#fff;font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
 td{padding:6px 8px;border-bottom:1px solid #eef0f4;vertical-align:top}
 tr:nth-child(even) td{background:#f8fafc}
-.td-banker{font-weight:800;font-size:12px;color:#0b1120;white-space:nowrap}
-.td-klient{font-weight:600;color:#334}
-.td-amt{font-family:'DM Mono',monospace;white-space:nowrap}
-.amt-j{font-size:13px;font-weight:800;color:#1d4ed8}
-.amt-p{font-size:13px;font-weight:800;color:#16a34a}
-.tfoot td{font-weight:800;background:#f0f4ff;border-top:2px solid #0b1120;font-size:12px}
-.tfoot .amt-j,.tfoot .amt-p{font-size:14px}
-@media print{body{padding:10px 14px}@page{size:A4 landscape;margin:12mm 14mm}}
+.td-b{font-weight:800;font-size:13px;color:#0b1120;white-space:nowrap}
+.td-k{font-weight:600;color:#223}
+.td-a{font-family:'DM Mono',monospace;white-space:nowrap;vertical-align:top}
+.td-n{color:#666;font-size:10px}
+.aj{font-size:14px;font-weight:800;color:#1d4ed8;display:block}
+.ap{font-size:14px;font-weight:800;color:#16a34a;display:block}
+.half{font-size:8px;color:#999;display:block;margin-top:1px}
+.dim{opacity:.3}
+tfoot td{font-weight:800;background:#eef3ff;border-top:2px solid #0b1120;font-size:12px}
+tfoot .aj,tfoot .ap{font-size:15px}
+@media print{body{padding:8px 12px}@page{size:A4 landscape;margin:10mm 12mm}}
 </style></head><body>
 
 <h1>💰 ${title}</h1>
@@ -1102,29 +1406,29 @@ tr:nth-child(even) td{background:#f8fafc}
   <th>Schůzka</th><th>Typ</th><th>Scénář</th><th>Poznámka</th>
 </tr></thead>
 <tbody>${rows}</tbody>
-<tfoot class="tfoot"><tr>
-  <td colspan="2">CELKEM (${data.length} obchodů)</td>
-  <td><span class="amt-j">${fK(totJ)}</span></td>
-  <td><span class="amt-p">${fK(totP)}</span></td>
-  <td colspan="4" style="color:#666;font-size:10px">Poč. = počítaná částka (50% u sdílených obchodů)</td>
+<tfoot><tr>
+  <td colspan="2">CELKEM · ${data.length} obchodů</td>
+  <td><span class="aj">${fK(totJ)}</span></td>
+  <td><span class="ap">${fK(totP)}</span></td>
+  <td colspan="4" style="color:#888;font-size:9px">Poč. = počítaná částka (50% u sdílených obchodů s bankéřem)</td>
 </tr></tfoot>
 </table>
 </body></html>`;
 
-const w=window.open(’’,’_blank’,‘width=1100,height=750’);
+const w = window.open(’’, ‘_blank’, ‘width=1100,height=750’);
+if (!w) { toast(‘Povol pop-upy v Safari’); return; }
 w.document.write(html);
 w.document.close();
-// trigger print dialog after fonts load
-w.onload=()=>setTimeout(()=>w.print(),400);
+w.addEventListener(‘load’, () => setTimeout(() => w.print(), 400));
 closeM(‘m-print’);
 }
 
-// Close on bg
-document.getElementById(‘m-add’).addEventListener(‘click’,e=>{if(e.target.id===‘m-add’)closeM(‘m-add’)});
-document.getElementById(‘m-det’).addEventListener(‘click’,e=>{if(e.target.id===‘m-det’)closeM(‘m-det’)});
-// Close print modal on bg click
-document.getElementById(‘m-print’).addEventListener(‘click’,e=>{if(e.target.id===‘m-print’)closeM(‘m-print’)});
+// ── CLOSE ON BG ──────────────────────────────
+[‘m-add’,‘m-det’,‘m-print’].forEach(id =>
+document.getElementById(id).addEventListener(‘click’, e => { if (e.target.id === id) closeM(id); })
+);
 
+// ── START ────────────────────────────────────
 init();
 </script>
 
