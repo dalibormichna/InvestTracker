@@ -1175,7 +1175,8 @@ function loadXLSX() {
 }
 
 // ── EXPORT EXCEL ─────────────────────────────
-function exportExcel() {
+async function exportExcel() {
+  try { await loadXLSX(); } catch(e) { toast('❌ ' + e.message); return; }
   const {q, year, elapsed, total, ratio} = qMeta();
   const ob = filtZ(bfEx).filter(z => !z.jenSch);
   const sc = filtZ(bfEx).filter(z => z.jenSch);
@@ -1282,6 +1283,9 @@ document.getElementById('imp-file').addEventListener('change', async e => {
   const st = document.getElementById('imp-st');
   st.style.display = 'block'; st.textContent = 'Načítám…';
   try {
+    if (!file.name.endsWith('.json')) {
+      await loadXLSX();
+    }
     if (file.name.endsWith('.json')) {
       const data = JSON.parse(await file.text());
       const recs = data.zaznamy || [];
