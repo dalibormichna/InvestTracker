@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-title" content="Investice">
 <title>Investiční Tracker</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='26' fill='%23ffcf5c' opacity='.2'/%3E%3Ctext x='30' y='40' text-anchor='middle' font-size='30'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');</style>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -1161,6 +1161,19 @@ async function delZ() {
   renderAll();
 }
 
+// ── LAZY XLSX LOAD ───────────────────────────
+let _xlsxLoaded = false;
+function loadXLSX() {
+  return new Promise((res, rej) => {
+    if (typeof XLSX !== 'undefined' || _xlsxLoaded) { res(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = () => { _xlsxLoaded = true; res(); };
+    s.onerror = () => rej(new Error('XLSX se nepodařilo načíst. Zkontroluj připojení.'));
+    document.head.appendChild(s);
+  });
+}
+
 // ── EXPORT EXCEL ─────────────────────────────
 function exportExcel() {
   const {q, year, elapsed, total, ratio} = qMeta();
@@ -1331,8 +1344,8 @@ function updPrCount() {
   const to   = document.getElementById('pr-to').value;
   document.getElementById('pr-count').textContent = `${getPrintData(from, to, bfPrint).length} obchodů ve výběru`;
 }
-document.getElementById('pr-from').addEventListener('input', updPrCount);
-document.getElementById('pr-to').addEventListener('input', updPrCount);
+document.getElementById('pr-from')?.addEventListener('input', updPrCount);
+document.getElementById('pr-to')?.addEventListener('input', updPrCount);
 
 function getPrintData(from, to, bf) {
   return zaznamy.filter(z => {
@@ -1424,11 +1437,21 @@ closeM(‘m-print’);
 }
 
 // ── CLOSE ON BG ──────────────────────────────
-[‘m-add’,‘m-det’,‘m-print’].forEach(id =>
-document.getElementById(id).addEventListener(‘click’, e => { if (e.target.id === id) closeM(id); })
-);
+[‘m-add’,‘m-det’,‘m-print’].forEach(id => {
+const el = document.getElementById(id);
+if (el) el.addEventListener(‘click’, e => { if (e.target.id === id) closeM(id); });
+});
 
 // ── START ────────────────────────────────────
+// Global error catch — pokud něco selže před init, ukáže chybu v UI
+window.onerror = function(msg, src, line) {
+const h = document.getElementById(‘hero’);
+if (h) h.innerHTML = `<div style="color:var(--red);font-size:12px;font-weight:700">JS chyba: ${msg}<br>řádek ${line}</div>`;
+const q = document.getElementById(‘qpill’);
+if (q) q.textContent = ‘Chyba JS’;
+return false;
+};
+
 init();
 </script>
 
