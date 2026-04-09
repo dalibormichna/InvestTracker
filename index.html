@@ -200,6 +200,9 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
       <div class="hero-val" style="color:var(--gold)">—</div>
     </div>
     <div class="sgrid" id="sgrid"></div>
+    <div style="display:flex;justify-content:center;padding:10px 14px 0" id="pie-prehled-wrap" style="display:none">
+      <canvas id="pie-prehled" width="220" height="220" style="width:220px;height:220px"></canvas>
+    </div>
     <div class="sec"><span class="sec-lbl">Záznamy</span><span id="pcnt" style="font-size:11px;color:var(--t3)"></span></div>
     <div class="chips" id="chips-p"></div>
     <div class="dl" id="dl"></div>
@@ -208,7 +211,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
       <div style="font-size:14px;font-weight:700">Žádné záznamy</div>
       <div style="font-size:12px;color:var(--t2);margin-top:4px">Přidej první kliknutím na ＋ Přidat.</div>
     </div>
-    <div class="vbar">Investiční Tracker v2.1</div>
+    <div class="vbar">Investiční Tracker v2.2</div>
   </div>
 
   <!-- PLÁN -->
@@ -246,7 +249,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
         <div id="sch-list" style="padding:12px 14px;font-size:12px;color:var(--t2)">—</div>
       </div>
     </div>
-    <div class="vbar">Investiční Tracker v2.1</div>
+    <div class="vbar">Investiční Tracker v2.2</div>
   </div>
 
   <!-- NASTAVENÍ -->
@@ -258,6 +261,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
           <div style="font-size:11px;color:var(--t3);font-weight:700;margin-bottom:2px">Filtr bankéřů pro export:</div>
           <div style="display:flex;gap:4px;flex-wrap:wrap" id="chips-exp"></div>
           <button class="btn-s" onclick="exportExcel()">📊 Exportovat do Excelu (plný)</button>
+          <button class="btn-s" style="border-color:rgba(52,201,122,.4);color:var(--green)" onclick="openExport2Modal()">📋 Přehledový export (Excel, 1 list)</button>
           <button class="btn-s" style="border-color:rgba(255,207,92,.4);color:var(--gold)" onclick="openPrintModal()">🖨️ Přehledový report (PDF / tisk)</button>
         </div>
       </div>
@@ -275,7 +279,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
         <div class="sett-b"><div id="sett-info" style="font-size:12px;color:var(--t2);line-height:1.9"></div></div>
       </div>
     </div>
-    <div class="vbar">Investiční Tracker v2.1 · Data lokálně 🔒</div>
+    <div class="vbar">Investiční Tracker v2.2 · Data lokálně 🔒</div>
   </div>
 
 </div>
@@ -392,6 +396,26 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 </div>
 </div>
 
+<!-- MODAL: EXPORT 2 -->
+<div class="mbg" id="m-exp2">
+<div class="ms">
+  <div class="mh"></div>
+  <div class="mt">📋 Přehledový export Excel</div>
+  <div style="padding:9px 17px 0;font-size:11px;color:var(--t2);line-height:1.6">Jeden list · Bankéř, Klient, Jednorázová (=50% u sdílených), Pravidelná (=50% u sdílených), Datum schůzky, Poznámka.</div>
+  <div class="fs">
+    <label class="fl">Bankéři (prázdné = všichni)</label>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px" id="chips-exp2"></div>
+  </div>
+  <div class="fr">
+    <div><label class="fl">Datum od</label><input class="fi" id="exp2-from" type="date"></div>
+    <div><label class="fl">Datum do</label><input class="fi" id="exp2-to" type="date"></div>
+  </div>
+  <div style="padding:9px 17px 0;font-size:11px;color:var(--t3)" id="exp2-count"></div>
+  <button class="btn-p" style="background:var(--green)" onclick="doExport2()">📥 Stáhnout Excel</button>
+  <div style="height:10px"></div>
+</div>
+</div>
+
 <!-- MODAL: PRINT REPORT -->
 <div class="mbg" id="m-print">
 <div class="ms">
@@ -417,7 +441,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'DM Sans'
 <script>
 'use strict';
 // ═══════════════════════════════════════════════
-//  INVESTIČNÍ TRACKER v2.1
+//  INVESTIČNÍ TRACKER v2.2
 //  DB: investice_v2 (zachovává existující data)
 // ═══════════════════════════════════════════════
 
@@ -744,6 +768,11 @@ function renderPrehled() {
     <div class="sc"><div class="sc-lbl">📦 Obchodů</div><div class="sc-val" style="color:var(--accent)">${ob.length}</div></div>
     <div class="sc"><div class="sc-lbl">📅 Schůzek</div><div class="sc-val" style="color:var(--purple)">${data.filter(z => z.jenSch).length}</div></div>`;
 
+  // Koláčový graf v přehledu
+  const pieWrap = document.getElementById('pie-prehled-wrap');
+  if (pieWrap) pieWrap.style.display = ob.length ? 'flex' : 'none';
+  if (ob.length) drawPieOn('pie-prehled', ob);
+
   document.getElementById('pcnt').textContent = `${data.length} záznamů`;
   const dlEl = document.getElementById('dl'), emEl = document.getElementById('dl-empty');
 
@@ -860,8 +889,8 @@ function renderSett() {
 }
 
 // ── KOLÁČOVÝ GRAF ────────────────────────────
-function drawPie(data) {
-  const canvas = document.getElementById('pie-chart');
+function drawPieOn(canvasId, data) {
+  const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   const dpr = window.devicePixelRatio || 1;
   const SIZE = 220;
@@ -907,6 +936,7 @@ function drawPie(data) {
     ly += 15;
   });
 }
+function drawPie(data) { drawPieOn('pie-chart', data); }
 
 // ── FORM ─────────────────────────────────────
 function initSce() {
@@ -1324,6 +1354,104 @@ document.getElementById('imp-file').addEventListener('change', async e => {
   }
 });
 
+// ── EXPORT 2 (přehledový, 1 list) ────────────
+let bfExp2 = [];
+function openExport2Modal() {
+  bfExp2 = [];
+  buildChips('chips-exp2', bfExp2, 'togBExp2', true);
+  const {start, end} = qMeta();
+  document.getElementById('exp2-from').value = start.toISOString().slice(0, 10);
+  document.getElementById('exp2-to').value   = end.toISOString().slice(0, 10);
+  updExp2Count();
+  document.getElementById('m-exp2').classList.add('open');
+}
+function togBExp2(n) { tog(bfExp2, n); buildChips('chips-exp2', bfExp2, 'togBExp2', true); updExp2Count(); }
+function updExp2Count() {
+  const from = document.getElementById('exp2-from').value;
+  const to   = document.getElementById('exp2-to').value;
+  const cnt = getExp2Data(from, to, bfExp2).length;
+  document.getElementById('exp2-count').textContent = `${cnt} obchodů ve výběru`;
+}
+document.getElementById('exp2-from')?.addEventListener('input', updExp2Count);
+document.getElementById('exp2-to')?.addEventListener('input', updExp2Count);
+
+function getExp2Data(from, to, bf) {
+  return zaznamy.filter(z => {
+    if (z.jenSch) return false;
+    const d = z.datumSchuzky || '';
+    if (from && d < from) return false;
+    if (to   && d > to)   return false;
+    if (bf.length && !bf.includes(z.banker)) return false;
+    return true;
+  }).sort((a, b) =>
+    (a.banker || '').localeCompare(b.banker || '') ||
+    (a.datumSchuzky || '').localeCompare(b.datumSchuzky || '')
+  );
+}
+
+async function doExport2() {
+  try { await loadXLSX(); } catch(e) { toast('❌ ' + e.message); return; }
+  const from = document.getElementById('exp2-from').value;
+  const to   = document.getElementById('exp2-to').value;
+  const data = getExp2Data(from, to, bfExp2);
+  if (!data.length) { toast('Žádná data ve výběru'); return; }
+
+  const czk = v => ({v: Number(v) || 0, t: 'n', z: '#,##0 "Kč"'});
+  const wb = XLSX.utils.book_new();
+
+  const hdr = ['Bankéř', 'Klient', 'Jednorázová investice (½ u sdílených)', 'Pravidelná investice (½ u sdílených)', 'Datum schůzky', 'Poznámka'];
+  const rows = data.map(z => [
+    z.banker || '',
+    z.klient || '',
+    czk(z.pocJ),
+    czk(z.pocP),
+    z.datumSchuzky || '',
+    z.poznamka || ''
+  ]);
+
+  // Součtový řádek
+  const totJ = data.reduce((s, z) => s + (z.pocJ || 0), 0);
+  const totP = data.reduce((s, z) => s + (z.pocP || 0), 0);
+  rows.push(['CELKEM', `${data.length} obchodů`, czk(totJ), czk(totP), '', '']);
+
+  const ws = XLSX.utils.aoa_to_sheet([hdr, ...rows]);
+
+  // Šíře sloupců
+  ws['!cols'] = [18, 22, 28, 28, 14, 30].map(w => ({wch: w}));
+
+  // Styl: tučné záhlaví + bankéř + částky
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  for (let R = 0; R <= range.e.r; R++) {
+    for (let C = 0; C <= range.e.c; C++) {
+      const addr = XLSX.utils.encode_cell({r: R, c: C});
+      if (!ws[addr]) continue;
+      ws[addr].s = ws[addr].s || {};
+      // Záhlaví
+      if (R === 0) {
+        ws[addr].s = {font: {bold: true, color: {rgb: 'FFFFFF'}}, fill: {fgColor: {rgb: '0B1120'}}, alignment: {wrapText: true}};
+      }
+      // Bankéř (sloupec 0)
+      if (R > 0 && C === 0 && R < range.e.r) {
+        ws[addr].s = {font: {bold: true, sz: 13}};
+      }
+      // Částky J a P (sloupce 2 a 3)
+      if (R > 0 && (C === 2 || C === 3) && R < range.e.r) {
+        ws[addr].s = {font: {bold: true, color: {rgb: C === 2 ? '1D4ED8' : '16A34A'}}};
+      }
+      // Součtový řádek
+      if (R === range.e.r) {
+        ws[addr].s = {font: {bold: true, sz: 13}, fill: {fgColor: {rgb: 'EEF3FF'}}};
+      }
+    }
+  }
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Přehled');
+  const fname = `investice_prehled${from ? '_' + from : ''}${to ? '_az_' + to : ''}.xlsx`;
+  XLSX.writeFile(wb, fname);
+  toast('Excel se stahuje…');
+  closeM('m-exp2');
+}
+
 // ── PRINT REPORT ─────────────────────────────
 function openPrintModal() {
   bfPrint = [];
@@ -1431,7 +1559,7 @@ tfoot .aj,tfoot .ap{font-size:15px}
 }
 
 // ── CLOSE ON BG ──────────────────────────────
-['m-add','m-det','m-print'].forEach(id => {
+['m-add','m-det','m-print','m-exp2'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('click', e => { if (e.target.id === id) closeM(id); });
 });
