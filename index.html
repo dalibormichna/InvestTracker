@@ -670,11 +670,13 @@ function selQF(year, q) {
 // ── INIT ─────────────────────────────────────
 async function init() {
   selQ = curQ();
+  _step('⏳ Otevírám DB…');
   try {
     db = await openDB();
-    // Načti vše najednou — žádné race conditions
-    const [allZ, _plans] = await Promise.all([dga('zaznamy'), loadAllPlans()]);
+    _step('⏳ DB otevřena, načítám záznamy…');
+    const [allZ] = await Promise.all([dga('zaznamy'), loadAllPlans()]);
     zaznamy = allZ;
+    _step('⏳ Záznamy načteny (' + zaznamy.length + '), renderuji…');
     dbchip(true, `DB OK · ${zaznamy.length}`);
 
     const {q, year, elapsed, total, isCur} = qMeta();
@@ -688,11 +690,13 @@ async function init() {
   } catch(e) {
     dbchip(false, 'Chyba DB');
     console.error('DB error:', e);
-    // Ukáže aspoň prázdný stav místo zamrznutí
     document.getElementById('qpill').textContent = 'Chyba DB';
     document.getElementById('hero').innerHTML =
-      `<div class="hero-lbl" style="color:var(--red)">Chyba databáze</div>
-       <div style="font-size:12px;color:var(--t2);margin-top:6px">Zkus obnovit stránku (pull-to-refresh).<br>Chyba: ${e.message}</div>`;
+      `<div style="color:var(--red);font-size:12px;font-weight:700;line-height:1.9">
+        ❌ Chyba při startu<br>
+        ${e.name}: ${e.message}<br>
+        <span style="color:var(--t3)">Zkus zavřít a znovu otevřít Safari.</span>
+      </div>`;
   }
 }
 
@@ -1447,15 +1451,28 @@ if (el) el.addEventListener(‘click’, e => { if (e.target.id === id) closeM(i
 });
 
 // ── START ────────────────────────────────────
-// Global error catch — pokud něco selže před init, ukáže chybu v UI
+// Visible debug — ukáže přesně kde se to zasekne
+const _dbg = document.getElementById(‘hero’);
+function _step(msg) {
+if (_dbg) _dbg.innerHTML = `<div style="font-size:12px;color:var(--gold);line-height:1.8">${msg}</div>`;
+}
+
 window.onerror = function(msg, src, line) {
 const h = document.getElementById(‘hero’);
-if (h) h.innerHTML = `<div style="color:var(--red);font-size:12px;font-weight:700">JS chyba: ${msg}<br>řádek ${line}</div>`;
 const q = document.getElementById(‘qpill’);
+if (h) h.innerHTML = `<div style="color:var(--red);font-size:12px;font-weight:700;line-height:1.8">❌ JS chyba<br>${msg}<br>řádek ${line}</div>`;
 if (q) q.textContent = ‘Chyba JS’;
 return false;
 };
 
+window.onunhandledrejection = function(e) {
+const h = document.getElementById(‘hero’);
+const q = document.getElementById(‘qpill’);
+if (h) h.innerHTML = `<div style="color:var(--red);font-size:12px;font-weight:700;line-height:1.8">❌ Promise chyba<br>${e.reason}</div>`;
+if (q) q.textContent = ‘Chyba’;
+};
+
+_step(‘⏳ Spouštím init…’);
 init();
 </script>
 
